@@ -1,10 +1,11 @@
-NAME        := cub3D
+NAME        = cub3D
 
-CC          := cc
-CFLAGS      := -Wall -Wextra -Werror
-INCFLAGS 	= -MMD -I./inc
+CC          = cc
+CFLAGS      = -Wall -Wextra -Werror
+INCFLAGS 	= -I./inc -I./libmlx
 
-LIBS      := -Lmlx -lmlx -framework OpenGL -framework AppKit
+LDFLAGS		= -L./libmlx
+LDLIBS		= -lmlx -framework OpenGL -framework AppKit
 
 VPATH 		= src/ 
 
@@ -19,8 +20,8 @@ DEPS        = $(SRCS:%.c=$(DDIR)/%.d)
 
 .PHONY: all clean fclean re bonus deb
 
-$(NAME): $(OBJS)
-	$(CC) $(CFLAGS) $(OBJS) -o $@ $(LIBS)
+$(NAME): libmlx/libmlx.a $(OBJS)
+	$(CC) $(CFLAGS) $(LDFLAGS) $(OBJS) -o $@ $(LDLIBS)
 
 $(ODIR)/%.o: %.c $(DDIR)/%.d | $(ODIR) $(DDIR)
 	$(CC) $(CFLAGS) $(INCFLAGS) -c $< -o $@
@@ -28,18 +29,22 @@ $(ODIR)/%.o: %.c $(DDIR)/%.d | $(ODIR) $(DDIR)
 $(ODIR):
 	mkdir -p $@
 
-$(DEPS):
-include $(wildcard $(DEPS))
+%.a:
+	$(MAKE) -C $(dir $@)
 
 all: $(NAME)
 
-deb:
-	gcc $(INCFLAGS) -g */*.c */*/*.c */*/*/*.c -o $@ $(LIBS)
+deb: libmlx/libmlx.a
+	gcc $(INCFLAGS) $(LDFLAGS) -g src/*.c -o $@ $(LDLIBS)
 
 clean:
 	$(RM) -r $(DDIR) $(ODIR)
 
 fclean: clean
+	$(MAKE) -C libmlx clean
 	$(RM) $(NAME)
 
 re: fclean all
+
+$(DEPS):
+include $(wildcard $(DEPS))
