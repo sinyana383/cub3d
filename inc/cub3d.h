@@ -6,7 +6,7 @@
 /*   By: ddurrand <ddurrand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/19 14:16:12 by ddurrand          #+#    #+#             */
-/*   Updated: 2022/09/21 16:26:27 by ddurrand         ###   ########.fr       */
+/*   Updated: 2022/09/21 18:20:46 by ddurrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 # include "mlx.h"
 # include "libft.h"
 # include "get_next_line.h"
+# include "math.h"
 # include <stdlib.h>
 # include <fcntl.h>
 
@@ -67,6 +68,7 @@ typedef struct s_cub3d
 	- Реализатор
 		- draw
 			+ draw_floor_and_celling: ходим по адрессам всех пикселей и окрашиваем их
+			- find wall
 			- draw_walls
 				- go along x and draw_lines
 					1. determine angle by radians

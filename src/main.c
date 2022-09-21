@@ -6,7 +6,7 @@
 /*   By: ddurrand <ddurrand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/19 14:12:00 by ddurrand          #+#    #+#             */
-/*   Updated: 2022/09/21 17:25:56 by ddurrand         ###   ########.fr       */
+/*   Updated: 2022/09/21 18:24:50 by ddurrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,22 @@ char	**get_map(int argc, char **argv)
 		return (0);
 	map = get_map_from_file(fd, argv[1]);
 	return (map);
+}
+
+void	find_wall(t_plr plr, char **map)
+{
+	float	ray;
+	float	x;
+	float	y;
+	//сначала просто запусти луч, паралелльный x или y, \
+	потом смотри по https://proglib.io/p/raycasting-for-the-smallest
+	ray = 0;
+	while (x < WIN_WIDTH && y < WIN_HEIGHT) //???
+	{
+		x = plr.x + ray * cosf(plr.dir);
+		y = plr.y + ray * sinf(plr.dir);
+		ray += 0.5f;
+	}
 }
 
 int	main(int argc, char **argv)
