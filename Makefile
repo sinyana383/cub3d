@@ -2,15 +2,18 @@ NAME        = cub3D
 
 CC          = cc
 CFLAGS      = -Wall -Wextra -Werror
-INCFLAGS 	= -I./inc -I./libmlx
+INCFLAGS 	= -MMD -I./inc -I./libs/libmlx
 
-LDFLAGS		= -L./libmlx
+LDFLAGS		= -L./libs/libmlx
 LDLIBS		= -lmlx -framework OpenGL -framework AppKit
 
-VPATH 		= src/ 
+VPATH 		= src/ src/get_next_line src/libft/
 
-SRCS        = main.c
+SRCS        = main.c \
+				get_lines.c get_lines_utils.c get_next_line.c get_next_line_utils.c\
+				ft_strlen.c ft_strnstr.c
 
+LIBS		= libs/libmlx/libmlx.a
 
 ODIR        = tmp
 OBJS        = $(SRCS:%.c=$(ODIR)/%.o)
@@ -20,7 +23,7 @@ DEPS        = $(SRCS:%.c=$(DDIR)/%.d)
 
 .PHONY: all clean fclean re bonus deb
 
-$(NAME): libmlx/libmlx.a $(OBJS)
+$(NAME): $(LIBS) $(OBJS)
 	$(CC) $(CFLAGS) $(LDFLAGS) $(OBJS) -o $@ $(LDLIBS)
 
 $(ODIR)/%.o: %.c $(DDIR)/%.d | $(ODIR) $(DDIR)
@@ -34,14 +37,14 @@ $(ODIR):
 
 all: $(NAME)
 
-deb: libmlx/libmlx.a
-	gcc $(INCFLAGS) $(LDFLAGS) -g src/*.c -o $@ $(LDLIBS)
+deb: $(LIBS)
+	gcc $(INCFLAGS) $(LDFLAGS) -g src/*.c src/*/*.c -o $@ $(LDLIBS)
 
 clean:
+	$(MAKE) -C libs/libmlx clean
 	$(RM) -r $(DDIR) $(ODIR)
 
 fclean: clean
-	$(MAKE) -C libmlx clean
 	$(RM) $(NAME)
 
 re: fclean all
