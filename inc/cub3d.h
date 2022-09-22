@@ -6,7 +6,7 @@
 /*   By: ddurrand <ddurrand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/19 14:16:12 by ddurrand          #+#    #+#             */
-/*   Updated: 2022/09/22 16:45:04 by ddurrand         ###   ########.fr       */
+/*   Updated: 2022/09/22 19:14:10 by ddurrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,14 +62,15 @@ typedef struct s_cub3d
 #endif
 
 /*
-	Две части:
+	Две части и бонус:
+	
 	- Парсер
 		входные данные: map.cub
 		выходные данные: структура t_map(смотри вверху)
 	- Реализатор
 		- draw
 			+ draw_floor_and_celling: ходим по адрессам всех пикселей и окрашиваем их
-			- find wall
+			- !find wall
 			- draw_walls
 				- go along x and draw_lines
 					1. determine angle by radians

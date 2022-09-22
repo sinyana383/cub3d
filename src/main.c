@@ -6,7 +6,7 @@
 /*   By: ddurrand <ddurrand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/19 14:12:00 by ddurrand          #+#    #+#             */
-/*   Updated: 2022/09/22 17:15:06 by ddurrand         ###   ########.fr       */
+/*   Updated: 2022/09/22 19:22:24 by ddurrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,20 +90,19 @@ void	set_plr(char **map, t_plr *plr)
 void	find_wall(t_plr plr, char **map)
 {
 	float	ray;
-	float	x;
-	float	y;
+	int		x;
+	int		y;
 
 	ray = 0;
-	x = plr.x;
-	y = plr.y;
-	while (map[(int)y][(int)x] == ' ' && \
-	x < (float)WIN_WIDTH && y < (float)WIN_HEIGHT) // сравнение int и float
+	x = (int)plr.x;
+	y = (int)plr.y;
+	while (ft_strchr("NWSE0", map[y][x]))
 	{
-		x = plr.x + ray * cosf(plr.dir); // cos(0) может колебаться
-		y = plr.y - ray * sinf(plr.dir);
-		ray += 0.5f;
+		x = (int)(plr.x + ray * cosf(plr.dir));
+		y = (int)(plr.y - ray * sinf(plr.dir));
+		ray += 0.1f;	// не знаю, какой шаг лучше сделать
 	}
-	printf("%d %d, %d\n", (int)y, (int)x, (int)ray); // как сделать норм кастинг?
+	printf("%d %d, %f\n", y, x, ray);
 }
 
 int	main(int argc, char **argv)
