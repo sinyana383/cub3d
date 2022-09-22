@@ -6,7 +6,7 @@
 /*   By: ddurrand <ddurrand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/19 14:12:00 by ddurrand          #+#    #+#             */
-/*   Updated: 2022/09/22 19:22:24 by ddurrand         ###   ########.fr       */
+/*   Updated: 2022/09/22 20:14:43 by ddurrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,6 +81,8 @@ void	set_plr(char **map, t_plr *plr)
 					plr->dir = 3 * (M_PI / 2);
 				else if (map[y][x] == 'E')
 					plr->dir = 0;
+				plr->start = plr->dir - FOV/2; // не уверена
+				plr->end = plr->dir + FOV/2;
 				return ;
 			}
 		}
@@ -98,12 +100,32 @@ void	find_wall(t_plr plr, char **map)
 	y = (int)plr.y;
 	while (ft_strchr("NWSE0", map[y][x]))
 	{
-		x = (int)(plr.x + ray * cosf(plr.dir));
+		x = (int)(plr.x + ray * cosf(plr.dir)); // при возможности может округлиться в какую-то жопу
 		y = (int)(plr.y - ray * sinf(plr.dir));
-		ray += 0.1f;	// не знаю, какой шаг лучше сделать
+		ray += 0.1f;
 	}
 	printf("%d %d, %f\n", y, x, ray);
 }
+
+void	find_walls(t_plr plr, char **map)
+{
+	int		i;
+	float	dir;
+
+	i = -1;
+	dir = plr.dir;
+	//всего выпускается WIN_WIDTH лучей, на каждый пиксель
+	while (++i < WIN_WIDTH)
+	{
+		// с каким шагом надо двигаться по углу, чтобы получилось на 640 пикселей?
+		// делим 1.0472(60 град) на 640-1(отчет с нуля) частей и по этим частям ходим
+		// от plr.start до plr.end
+		plr.dir = plr.start + i * (FOV/(WIN_WIDTH-1));
+		find_wall(plr, map);
+	}
+	plr.dir = dir;
+}
+
 
 int	main(int argc, char **argv)
 {

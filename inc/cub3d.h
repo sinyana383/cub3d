@@ -6,7 +6,7 @@
 /*   By: ddurrand <ddurrand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/19 14:16:12 by ddurrand          #+#    #+#             */
-/*   Updated: 2022/09/22 19:14:10 by ddurrand         ###   ########.fr       */
+/*   Updated: 2022/09/22 19:59:03 by ddurrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,9 @@ typedef struct s_cub3d
 	- Реализатор
 		- draw
 			+ draw_floor_and_celling: ходим по адрессам всех пикселей и окрашиваем их
-			- !find wall
+			- find walls
+				- !find wall
+					- !если у всех лучей одинаковая погрешность - значит все хорошо?
 			- draw_walls
 				- go along x and draw_lines
 					1. determine angle by radians
