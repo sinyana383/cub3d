@@ -1,21 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   libft.h                                            :+:      :+:    :+:   */
+/*   ft_strchr.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ddurrand <ddurrand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/10/06 12:10:05 by ddurrand          #+#    #+#             */
-/*   Updated: 2022/09/22 16:05:31 by ddurrand         ###   ########.fr       */
+/*   Created: 2021/10/06 12:04:21 by ddurrand          #+#    #+#             */
+/*   Updated: 2021/10/18 17:33:56 by ddurrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef LIBFT_H
-# define LIBFT_H
-# include <stddef.h>
+char	*ft_strchr(const char *s, int c)
+{
+	int		i;
+	char	c1;
 
-int		ft_strlen(const char *s);
-char	*ft_strnstr(const char *haystack, const char *needle, int len);
-char	*ft_strchr(const char *s, int c);
-
-#endif
+	i = 0;
+	c1 = (char)c;
+	while (s[i] != c1 && s[i])
+		++i;
+	if (s[i] == c1)
+		return ((char *)(s + i));
+	return (0);
+}

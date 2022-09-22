@@ -6,7 +6,7 @@
 /*   By: ddurrand <ddurrand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/19 14:12:00 by ddurrand          #+#    #+#             */
-/*   Updated: 2022/09/21 18:24:50 by ddurrand         ###   ########.fr       */
+/*   Updated: 2022/09/22 17:15:06 by ddurrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,30 +58,64 @@ char	**get_map(int argc, char **argv)
 	return (map);
 }
 
+void	set_plr(char **map, t_plr *plr)
+{
+	int	x;
+	int	y;
+
+	y = -1;
+	while (map[++y])
+	{
+		x = -1;
+		while (map[y][++x])
+		{
+			if (ft_strchr("NWES", map[y][x]))
+			{
+				plr->x = (float)x;
+				plr->y = (float)y;
+				if (map[y][x] == 'N')
+					plr->dir = M_PI / 2;
+				else if (map[y][x] == 'W')
+					plr->dir = M_PI;
+				else if (map[y][x] == 'S')
+					plr->dir = 3 * (M_PI / 2);
+				else if (map[y][x] == 'E')
+					plr->dir = 0;
+				return ;
+			}
+		}
+	}
+}
+
 void	find_wall(t_plr plr, char **map)
 {
 	float	ray;
 	float	x;
 	float	y;
-	//сначала просто запусти луч, паралелльный x или y, \
-	потом смотри по https://proglib.io/p/raycasting-for-the-smallest
+
 	ray = 0;
-	while (x < WIN_WIDTH && y < WIN_HEIGHT) //???
+	x = plr.x;
+	y = plr.y;
+	while (map[(int)y][(int)x] == ' ' && \
+	x < (float)WIN_WIDTH && y < (float)WIN_HEIGHT) // сравнение int и float
 	{
-		x = plr.x + ray * cosf(plr.dir);
-		y = plr.y + ray * sinf(plr.dir);
+		x = plr.x + ray * cosf(plr.dir); // cos(0) может колебаться
+		y = plr.y - ray * sinf(plr.dir);
 		ray += 0.5f;
 	}
+	printf("%d %d, %d\n", (int)y, (int)x, (int)ray); // как сделать норм кастинг?
 }
 
 int	main(int argc, char **argv)
 {
 	t_map	input_map;
+	t_plr	plr;
 	t_mlx	data;
 
 	input_map.map = get_map(argc, argv);
 	if (!input_map.map)
 		exit(0);
+	set_plr(input_map.map, &plr);
 	data.mlx = mlx_init();
 	data.win = mlx_new_window(data.mlx, WIN_WIDTH, WIN_HEIGHT, "cub3d");
 	data.img = mlx_new_image(data.mlx, WIN_WIDTH, WIN_HEIGHT);
@@ -89,5 +123,6 @@ int	main(int argc, char **argv)
 								&data.line_length, &data.endian);
 	draw_floor_and_celling(&data, 0x00F5F7F0, 0x00A284AB);
 	mlx_put_image_to_window(data.mlx, data.win, data.img, 0, 0);
+	find_wall(plr, input_map.map);
 	mlx_loop(data.mlx);
 }

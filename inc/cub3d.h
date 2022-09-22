@@ -6,7 +6,7 @@
 /*   By: ddurrand <ddurrand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/19 14:16:12 by ddurrand          #+#    #+#             */
-/*   Updated: 2022/09/21 18:20:46 by ddurrand         ###   ########.fr       */
+/*   Updated: 2022/09/22 16:45:04 by ddurrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 # include "libft.h"
 # include "get_next_line.h"
 # include "math.h"
+# include <stdio.h>
 # include <stdlib.h>
 # include <fcntl.h>
 
@@ -56,7 +57,7 @@ typedef struct s_cub3d
 // DESINES
 # define WIN_WIDTH	640
 # define WIN_HEIGHT	480
-# define FOV 		60		// угол обзора(в градусах)
+# define FOV 		1.0472	// угол обзора 60-ти градусов в радианах
 
 #endif
 

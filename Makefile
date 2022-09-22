@@ -11,7 +11,7 @@ VPATH 		= src/ src/get_next_line src/libft/
 
 SRCS        = main.c \
 				get_lines.c get_lines_utils.c get_next_line.c get_next_line_utils.c\
-				ft_strlen.c ft_strnstr.c
+				ft_strlen.c ft_strnstr.c ft_strchr.c
 
 LIBS		= libs/libmlx/libmlx.a
 
