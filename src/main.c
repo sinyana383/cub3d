@@ -6,7 +6,7 @@
 /*   By: ddurrand <ddurrand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/19 14:12:00 by ddurrand          #+#    #+#             */
-/*   Updated: 2022/09/23 13:40:52 by ddurrand         ###   ########.fr       */
+/*   Updated: 2022/09/23 15:18:24 by ddurrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,6 +93,8 @@ void	find_wall(t_plr plr, char **map)
 {
 	float	ray;
 	float	cos_sin;
+	float	prev_x;
+	float	prev_y;
 	int		x;
 	int		y;
 
@@ -101,15 +103,15 @@ void	find_wall(t_plr plr, char **map)
 	y = (int)plr.y;
 	while (ft_strchr("NWSE0", map[y][x]))
 	{
-		// принимаем от cos и sin только 6 чисел после запятой, поэтому надо округлять по 6 знака
-		sin_cos = cosf()
-		if ((f_xy - (int)f_xy) - 0.00)
-		x = (int)(); // при возможности может округлиться в какую-то жопу, так что думаю при 1.99999999998 не зачитывать поворот
-		y = (int)(plr.y - ray * sinf(plr.dir));
 		ray += 0.1f;
+		cos_sin = roundf(cosf(plr.dir) * 1000000) / 1000000;
+		x = (int)(plr.x + ray * cos_sin);
+		cos_sin = roundf(sinf(plr.dir) * 1000000) / 1000000;
+		y = (int)(plr.y - ray * cos_sin);
 	}
-	// printf("angle:%f\nx - %d y - %d, ray - %f\n", plr.dir * (180.0 / M_PI), y, x, ray);
-	printf("angle:%f\n", plr.dir * (180.0 / M_PI));
+	// определить какую ось по x и по y пересекли
+	printf("angle:%f\nx - %d y - %d, ray - %f\n", \
+	plr.dir * (180.0 / M_PI), x, y, ray);
 }
 
 void	find_walls(t_plr plr, char **map)
@@ -151,6 +153,6 @@ int	main(int argc, char **argv)
 	draw_floor_and_celling(&cub3d.mlx_data, 0x00F5F7F0, 0x00A284AB);
 	mlx_put_image_to_window(cub3d.mlx_data.mlx, \
 	cub3d.mlx_data.win, cub3d.mlx_data.img, 0, 0);
-	find_walls(cub3d.plr, cub3d.map_data.map);
-	mlx_loop(cub3d.mlx_data.mlx);
+	find_wall(cub3d.plr, cub3d.map_data.map);
+	// mlx_loop(cub3d.mlx_data.mlx);
 }

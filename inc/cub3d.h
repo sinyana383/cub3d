@@ -6,7 +6,7 @@
 /*   By: ddurrand <ddurrand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/19 14:16:12 by ddurrand          #+#    #+#             */
-/*   Updated: 2022/09/23 12:25:46 by ddurrand         ###   ########.fr       */
+/*   Updated: 2022/09/23 14:39:49 by ddurrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ typedef struct s_cub3d
 // DESINES
 # define WIN_WIDTH	640
 # define WIN_HEIGHT	480
-# define FOV 		1.0472	// угол обзора 60-ти градусов в радианах
+# define FOV 		1.0471975512 // угол обзора 60-ти градусов в радианах
 
 #endif
 
