@@ -6,7 +6,7 @@
 /*   By: ddurrand <ddurrand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/19 14:12:00 by ddurrand          #+#    #+#             */
-/*   Updated: 2022/09/23 15:18:24 by ddurrand         ###   ########.fr       */
+/*   Updated: 2022/09/23 17:20:15 by ddurrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,12 +89,22 @@ void	set_plr(char **map, t_plr *plr)
 	}
 }
 
+float	ray_len(float ray, t_plr plr)
+{
+	float	res;
+	float	cos_sin;
+	int		del_x;
+	int		del_y;
+
+	cos_sin = roundf(cosf(M_PI_2) * 1000000) / 1000000;
+	del_x = 
+	return (res);
+}
+
 void	find_wall(t_plr plr, char **map)
 {
 	float	ray;
 	float	cos_sin;
-	float	prev_x;
-	float	prev_y;
 	int		x;
 	int		y;
 
@@ -103,13 +113,14 @@ void	find_wall(t_plr plr, char **map)
 	y = (int)plr.y;
 	while (ft_strchr("NWSE0", map[y][x]))
 	{
-		ray += 0.1f;
+		ray += 0.001f;
 		cos_sin = roundf(cosf(plr.dir) * 1000000) / 1000000;
-		x = (int)(plr.x + ray * cos_sin);
+		x = roundf(plr.x + ray * cos_sin);
 		cos_sin = roundf(sinf(plr.dir) * 1000000) / 1000000;
-		y = (int)(plr.y - ray * cos_sin);
+		y = roundf(plr.y - ray * cos_sin);
 	}
 	// определить какую ось по x и по y пересекли
+	
 	printf("angle:%f\nx - %d y - %d, ray - %f\n", \
 	plr.dir * (180.0 / M_PI), x, y, ray);
 }
