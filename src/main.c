@@ -6,7 +6,7 @@
 /*   By: ddurrand <ddurrand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/19 14:12:00 by ddurrand          #+#    #+#             */
-/*   Updated: 2022/09/22 20:14:43 by ddurrand         ###   ########.fr       */
+/*   Updated: 2022/09/23 13:40:52 by ddurrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,8 +81,8 @@ void	set_plr(char **map, t_plr *plr)
 					plr->dir = 3 * (M_PI / 2);
 				else if (map[y][x] == 'E')
 					plr->dir = 0;
-				plr->start = plr->dir - FOV/2; // не уверена
-				plr->end = plr->dir + FOV/2;
+				plr->start = plr->dir - FOV / 2;
+				plr->end = plr->dir + FOV / 2;
 				return ;
 			}
 		}
@@ -92,6 +92,7 @@ void	set_plr(char **map, t_plr *plr)
 void	find_wall(t_plr plr, char **map)
 {
 	float	ray;
+	float	cos_sin;
 	int		x;
 	int		y;
 
@@ -100,50 +101,56 @@ void	find_wall(t_plr plr, char **map)
 	y = (int)plr.y;
 	while (ft_strchr("NWSE0", map[y][x]))
 	{
-		x = (int)(plr.x + ray * cosf(plr.dir)); // при возможности может округлиться в какую-то жопу
+		// принимаем от cos и sin только 6 чисел после запятой, поэтому надо округлять по 6 знака
+		sin_cos = cosf()
+		if ((f_xy - (int)f_xy) - 0.00)
+		x = (int)(); // при возможности может округлиться в какую-то жопу, так что думаю при 1.99999999998 не зачитывать поворот
 		y = (int)(plr.y - ray * sinf(plr.dir));
 		ray += 0.1f;
 	}
-	printf("%d %d, %f\n", y, x, ray);
+	// printf("angle:%f\nx - %d y - %d, ray - %f\n", plr.dir * (180.0 / M_PI), y, x, ray);
+	printf("angle:%f\n", plr.dir * (180.0 / M_PI));
 }
 
 void	find_walls(t_plr plr, char **map)
 {
 	int		i;
 	float	dir;
+	float	rad_step;
 
-	i = -1;
 	dir = plr.dir;
+	rad_step = FOV/(WIN_WIDTH-1);
 	//всего выпускается WIN_WIDTH лучей, на каждый пиксель
+	i = -1;
 	while (++i < WIN_WIDTH)
 	{
 		// с каким шагом надо двигаться по углу, чтобы получилось на 640 пикселей?
 		// делим 1.0472(60 град) на 640-1(отчет с нуля) частей и по этим частям ходим
 		// от plr.start до plr.end
-		plr.dir = plr.start + i * (FOV/(WIN_WIDTH-1));
+		plr.dir = plr.start + i * rad_step;
 		find_wall(plr, map);
 	}
 	plr.dir = dir;
 }
 
-
 int	main(int argc, char **argv)
 {
-	t_map	input_map;
-	t_plr	plr;
-	t_mlx	data;
+	t_cub3d	cub3d;
 
-	input_map.map = get_map(argc, argv);
-	if (!input_map.map)
+	cub3d.map_data.map = get_map(argc, argv);
+	if (!cub3d.map_data.map)
 		exit(0);
-	set_plr(input_map.map, &plr);
-	data.mlx = mlx_init();
-	data.win = mlx_new_window(data.mlx, WIN_WIDTH, WIN_HEIGHT, "cub3d");
-	data.img = mlx_new_image(data.mlx, WIN_WIDTH, WIN_HEIGHT);
-	data.addr = mlx_get_data_addr(data.img, &data.bits_per_pixel, \
-								&data.line_length, &data.endian);
-	draw_floor_and_celling(&data, 0x00F5F7F0, 0x00A284AB);
-	mlx_put_image_to_window(data.mlx, data.win, data.img, 0, 0);
-	find_wall(plr, input_map.map);
-	mlx_loop(data.mlx);
+	set_plr(cub3d.map_data.map, &cub3d.plr);
+	cub3d.mlx_data.mlx = mlx_init();
+	cub3d.mlx_data.win = mlx_new_window(cub3d.mlx_data.mlx, \
+	WIN_WIDTH, WIN_HEIGHT, "cub3d");
+	cub3d.mlx_data.img = mlx_new_image(cub3d.mlx_data.mlx, \
+	WIN_WIDTH, WIN_HEIGHT);
+	cub3d.mlx_data.addr = mlx_get_data_addr(cub3d.mlx_data.img, \
+	&cub3d.mlx_data.bits_per_pixel, &cub3d.mlx_data.line_length, &cub3d.mlx_data.endian);
+	draw_floor_and_celling(&cub3d.mlx_data, 0x00F5F7F0, 0x00A284AB);
+	mlx_put_image_to_window(cub3d.mlx_data.mlx, \
+	cub3d.mlx_data.win, cub3d.mlx_data.img, 0, 0);
+	find_walls(cub3d.plr, cub3d.map_data.map);
+	mlx_loop(cub3d.mlx_data.mlx);
 }

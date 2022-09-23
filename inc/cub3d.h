@@ -6,7 +6,7 @@
 /*   By: ddurrand <ddurrand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/19 14:16:12 by ddurrand          #+#    #+#             */
-/*   Updated: 2022/09/22 19:59:03 by ddurrand         ###   ########.fr       */
+/*   Updated: 2022/09/23 12:25:46 by ddurrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,9 +49,9 @@ typedef struct s_map
 
 typedef struct s_cub3d
 {
-	t_mlx	*mlx;
-	t_map	*map;
-	t_plr	*plr;
+	t_mlx	mlx_data;
+	t_map	map_data;
+	t_plr	plr;
 }	t_cub3d;
 
 // DESINES
