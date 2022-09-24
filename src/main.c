@@ -6,7 +6,7 @@
 /*   By: ddurrand <ddurrand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/19 14:12:00 by ddurrand          #+#    #+#             */
-/*   Updated: 2022/09/24 12:41:36 by ddurrand         ###   ########.fr       */
+/*   Updated: 2022/09/24 13:56:40 by ddurrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,7 +91,6 @@ void	set_plr(char **map, t_plr *plr)
 
 double	ray_len(double ray, t_plr plr)
 {
-	double		res;
 	double		del_x;	// меняется: то со знаком, то без
 	double		del_y;
 	int			plus_minus;
@@ -154,15 +153,15 @@ void	find_wall(t_plr plr, char **map)
 	ray = 0;
 	x = (int)plr.x;
 	y = (int)plr.y;
-	while (ft_strchr("NWSE0", map[y][x]))
+	while (ft_strchr("NWSE0", map[(int)y][(int)x]))
 	{
-		ray += 0.001f;
-		x = roundf(plr.x + ray * cosl(plr.dir));
-		y = roundf(plr.y - ray * sinl(plr.dir));
+		ray += 0.001f; // 0.001f;
+		x = floorl(plr.x + ray * cosl(plr.dir)); // установить границу для округления
+		y = floorl(plr.y - ray * sinl(plr.dir));
 	}
 	// определить какую ось по x и по y пересекли
-	// printf("angle:%f\nx - %d y - %d, ray - %f\n", \
-	// plr.dir * (180.0 / M_PI), x, y, ray);
+	printf("angle:%f\nx - %d y - %d, ray - %lf\n", \
+	plr.dir * (180.0 / M_PI), x, y, ray_len(ray, plr));
 }
 
 void	find_walls(t_plr plr, char **map)
@@ -172,14 +171,10 @@ void	find_walls(t_plr plr, char **map)
 	double	rad_step;
 
 	dir = plr.dir;
-	rad_step = FOV/(WIN_WIDTH-1);
-	//всего выпускается WIN_WIDTH лучей, на каждый пиксель
+	rad_step = FOV / (WIN_WIDTH - 1);
 	i = -1;
 	while (++i < WIN_WIDTH)
 	{
-		// с каким шагом надо двигаться по углу, чтобы получилось на 640 пикселей?
-		// делим 1.0472(60 град) на 640-1(отчет с нуля) частей и по этим частям ходим
-		// от plr.start до plr.end
 		plr.dir = plr.start + i * rad_step;
 		find_wall(plr, map);
 	}
