@@ -6,7 +6,7 @@
 /*   By: ddurrand <ddurrand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/19 14:12:00 by ddurrand          #+#    #+#             */
-/*   Updated: 2022/09/23 17:20:15 by ddurrand         ###   ########.fr       */
+/*   Updated: 2022/09/24 10:39:35 by ddurrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,8 +71,8 @@ void	set_plr(char **map, t_plr *plr)
 		{
 			if (ft_strchr("NWES", map[y][x]))
 			{
-				plr->x = (float)x;
-				plr->y = (float)y;
+				plr->x = (double)x;
+				plr->y = (double)y;
 				if (map[y][x] == 'N')
 					plr->dir = M_PI / 2;
 				else if (map[y][x] == 'W')
@@ -89,22 +89,22 @@ void	set_plr(char **map, t_plr *plr)
 	}
 }
 
-float	ray_len(float ray, t_plr plr)
+double	ray_len(double ray, t_plr plr, int x, int y)
 {
-	float	res;
-	float	cos_sin;
+	double	res;
 	int		del_x;
 	int		del_y;
 
-	cos_sin = roundf(cosf(M_PI_2) * 1000000) / 1000000;
-	del_x = 
+	del_x = roundl() - plr.x;
+	del_y = y - plr.y;
+	if (del_y > 0)
+		y = floorl();
 	return (res);
 }
 
 void	find_wall(t_plr plr, char **map)
 {
-	float	ray;
-	float	cos_sin;
+	double	ray;
 	int		x;
 	int		y;
 
@@ -114,22 +114,19 @@ void	find_wall(t_plr plr, char **map)
 	while (ft_strchr("NWSE0", map[y][x]))
 	{
 		ray += 0.001f;
-		cos_sin = roundf(cosf(plr.dir) * 1000000) / 1000000;
-		x = roundf(plr.x + ray * cos_sin);
-		cos_sin = roundf(sinf(plr.dir) * 1000000) / 1000000;
-		y = roundf(plr.y - ray * cos_sin);
+		x = roundf(plr.x + ray * cosl(plr.dir));
+		y = roundf(plr.y - ray * sinl(plr.dir));
 	}
 	// определить какую ось по x и по y пересекли
-	
-	printf("angle:%f\nx - %d y - %d, ray - %f\n", \
-	plr.dir * (180.0 / M_PI), x, y, ray);
+	// printf("angle:%f\nx - %d y - %d, ray - %f\n", \
+	// plr.dir * (180.0 / M_PI), x, y, ray);
 }
 
 void	find_walls(t_plr plr, char **map)
 {
 	int		i;
-	float	dir;
-	float	rad_step;
+	double	dir;
+	double	rad_step;
 
 	dir = plr.dir;
 	rad_step = FOV/(WIN_WIDTH-1);
