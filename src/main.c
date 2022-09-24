@@ -6,7 +6,7 @@
 /*   By: ddurrand <ddurrand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/19 14:12:00 by ddurrand          #+#    #+#             */
-/*   Updated: 2022/09/24 10:39:35 by ddurrand         ###   ########.fr       */
+/*   Updated: 2022/09/24 12:41:36 by ddurrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,17 +89,60 @@ void	set_plr(char **map, t_plr *plr)
 	}
 }
 
-double	ray_len(double ray, t_plr plr, int x, int y)
+double	ray_len(double ray, t_plr plr)
 {
-	double	res;
-	int		del_x;
-	int		del_y;
+	double		res;
+	double		del_x;	// меняется: то со знаком, то без
+	double		del_y;
+	int			plus_minus;
 
-	del_x = roundl() - plr.x;
-	del_y = y - plr.y;
+	plus_minus = 1;
+	if (cosl(plr.dir) < 0)
+		plus_minus = -1;
+	del_x = ray * cosl(ray) * plus_minus;
+	plus_minus = 1;
+	if (sinl(plr.dir) > 0)
+		plus_minus = -1;
+	del_y = ray * sinl(ray) * plus_minus;
+	if (del_x > 0)
+	{
+		del_x = plr.x + del_x;	// перемещение по x на правильную линию
+		del_x = floorl(del_x);
+		if ((int)del_x - (int)plr.x <= 0) // если del_x даже на одну линию не переместился от игрока
+			del_x = INFINITY;
+	}
+	else
+	{
+		del_x = plr.x + del_x;
+		del_x = ceill(del_x);
+		if ((int)del_x - (int)plr.x >= 0)
+			del_x = INFINITY;
+	}
 	if (del_y > 0)
-		y = floorl();
-	return (res);
+	{
+		del_y = plr.y + del_y;
+		del_y = floorl(del_y);
+		if ((int)del_y - (int)plr.y <= 0)
+			del_y = INFINITY;
+	}
+	else
+	{
+		del_y = plr.y + del_y;
+		del_y = ceill(del_y);
+		if ((int)del_y - (int)plr.y >= 0)
+			del_y = INFINITY;
+	}
+	if (del_x == INFINITY && del_y == INFINITY)
+		printf ("error: ray_len");
+	if (del_x == INFINITY)
+		return (fabs(del_y - plr.y));
+	if (del_y == INFINITY)
+		return (fabs(del_x - plr.x));
+	del_x = fabs(del_x - plr.x);
+	del_y = fabs(del_y - plr.y);
+	if (del_x - del_y > 0)
+		return (del_x);
+	return (del_y);
 }
 
 void	find_wall(t_plr plr, char **map)
