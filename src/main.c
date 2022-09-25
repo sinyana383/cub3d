@@ -6,132 +6,67 @@
 /*   By: ddurrand <ddurrand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/19 14:12:00 by ddurrand          #+#    #+#             */
-/*   Updated: 2022/09/24 13:56:40 by ddurrand         ###   ########.fr       */
+/*   Updated: 2022/09/25 13:33:51 by ddurrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
-void	my_mlx_pixel_put(t_mlx *data, int x, int y, int color)
+double	my_cos_sin(double angle, char s_c)
 {
-	char	*dst;
-
-	dst = data->addr + (y * data->line_length + x * (data->bits_per_pixel / 8));
-	*(unsigned int *)dst = color;
+	if (s_c == 's')
+		return (roundl(sinl(angle) * 100000) / 100000);
+	return (roundl(cosl(angle) * 100000) / 100000);
 }
 
-void	draw_floor_and_celling(t_mlx *data, int color_celling, int color_floor)
+void	draw_column(double ray, int i)
 {
-	int	x;
-	int	y;
+	double	column_height;
 
-	y = 0;
-	while (y < WIN_HEIGHT / 2)
-	{
-		x = -1;
-		while (++x < WIN_WIDTH)
-			my_mlx_pixel_put(data, x, y, color_celling);
-		++y;
-	}
-	while (y < WIN_HEIGHT)
-	{
-		x = -1;
-		while (++x < WIN_WIDTH)
-			my_mlx_pixel_put(data, x, y, color_floor);
-		++y;
-	}
-}
-
-char	**get_map(int argc, char **argv)
-{
-	int		fd;
-	char	**map;
-
-	if (argc < 2)
-		return (0);
-	if (!ft_strnstr(argv[1], ".cub", ft_strlen(".cub") + 1))
-		return (0);
-	fd = open(argv[1], O_RDONLY);
-	if (fd < 0)
-		return (0);
-	map = get_map_from_file(fd, argv[1]);
-	return (map);
-}
-
-void	set_plr(char **map, t_plr *plr)
-{
-	int	x;
-	int	y;
-
-	y = -1;
-	while (map[++y])
-	{
-		x = -1;
-		while (map[y][++x])
-		{
-			if (ft_strchr("NWES", map[y][x]))
-			{
-				plr->x = (double)x;
-				plr->y = (double)y;
-				if (map[y][x] == 'N')
-					plr->dir = M_PI / 2;
-				else if (map[y][x] == 'W')
-					plr->dir = M_PI;
-				else if (map[y][x] == 'S')
-					plr->dir = 3 * (M_PI / 2);
-				else if (map[y][x] == 'E')
-					plr->dir = 0;
-				plr->start = plr->dir - FOV / 2;
-				plr->end = plr->dir + FOV / 2;
-				return ;
-			}
-		}
-	}
+	column_height = roundl(1.0 / ray * 1000) / 1000;
+	if (column_height - 1000.0 >= 0)
+		column_height = 100.0;	// 100% экрана
+	else
+		column_height = roundl(1.0 / ray * 1000) / 1000;
+	
 }
 
 double	ray_len(double ray, t_plr plr)
 {
 	double		del_x;	// меняется: то со знаком, то без
 	double		del_y;
-	int			plus_minus;
 
-	plus_minus = 1;
-	if (cosl(plr.dir) < 0)
-		plus_minus = -1;
-	del_x = ray * cosl(ray) * plus_minus;
-	plus_minus = 1;
-	if (sinl(plr.dir) > 0)
-		plus_minus = -1;
-	del_y = ray * sinl(ray) * plus_minus;
+	del_x = ray * my_cos_sin(plr.dir, 'c');
+	del_y = ray * my_cos_sin(plr.dir, 's') * (-1);
 	if (del_x > 0)
 	{
 		del_x = plr.x + del_x;	// перемещение по x на правильную линию
 		del_x = floorl(del_x);
-		if ((int)del_x - (int)plr.x <= 0) // если del_x даже на одну линию не переместился от игрока
+		if ((int)del_x - (int)floorl(plr.x) <= 0) // если del_x даже на одну линию не переместился от игрока
 			del_x = INFINITY;
 	}
 	else
 	{
 		del_x = plr.x + del_x;
 		del_x = ceill(del_x);
-		if ((int)del_x - (int)plr.x >= 0)
+		if ((int)del_x - (int)ceill(plr.x) >= 0)
 			del_x = INFINITY;
 	}
 	if (del_y > 0)
 	{
 		del_y = plr.y + del_y;
 		del_y = floorl(del_y);
-		if ((int)del_y - (int)plr.y <= 0)
+		if ((int)del_y - (int)floorl(plr.y) <= 0)
 			del_y = INFINITY;
 	}
 	else
 	{
 		del_y = plr.y + del_y;
 		del_y = ceill(del_y);
-		if ((int)del_y - (int)plr.y >= 0)
+		if ((int)del_y - (int)ceill(plr.y) >= 0)
 			del_y = INFINITY;
 	}
-	if (del_x == INFINITY && del_y == INFINITY)
+	if (del_x == INFINITY && del_y == INFINITY) // притык к стенке, например: "1E" смотрит на восток и к стене прижался
 		printf ("error: ray_len");
 	if (del_x == INFINITY)
 		return (fabs(del_y - plr.y));
@@ -155,9 +90,9 @@ void	find_wall(t_plr plr, char **map)
 	y = (int)plr.y;
 	while (ft_strchr("NWSE0", map[(int)y][(int)x]))
 	{
-		ray += 0.001f; // 0.001f;
-		x = floorl(plr.x + ray * cosl(plr.dir)); // установить границу для округления
-		y = floorl(plr.y - ray * sinl(plr.dir));
+		ray += 0.001;		// лучше сделать с шагом по линиям, тип: x > 0 ceill(x),
+		x = floorl(plr.x + ray * my_cos_sin(plr.dir, 'c'));
+		y = floorl(plr.y - ray * my_cos_sin(plr.dir, 's'));
 	}
 	// определить какую ось по x и по y пересекли
 	printf("angle:%f\nx - %d y - %d, ray - %lf\n", \
@@ -185,20 +120,7 @@ int	main(int argc, char **argv)
 {
 	t_cub3d	cub3d;
 
-	cub3d.map_data.map = get_map(argc, argv);
-	if (!cub3d.map_data.map)
-		exit(0);
-	set_plr(cub3d.map_data.map, &cub3d.plr);
-	cub3d.mlx_data.mlx = mlx_init();
-	cub3d.mlx_data.win = mlx_new_window(cub3d.mlx_data.mlx, \
-	WIN_WIDTH, WIN_HEIGHT, "cub3d");
-	cub3d.mlx_data.img = mlx_new_image(cub3d.mlx_data.mlx, \
-	WIN_WIDTH, WIN_HEIGHT);
-	cub3d.mlx_data.addr = mlx_get_data_addr(cub3d.mlx_data.img, \
-	&cub3d.mlx_data.bits_per_pixel, &cub3d.mlx_data.line_length, &cub3d.mlx_data.endian);
-	draw_floor_and_celling(&cub3d.mlx_data, 0x00F5F7F0, 0x00A284AB);
-	mlx_put_image_to_window(cub3d.mlx_data.mlx, \
-	cub3d.mlx_data.win, cub3d.mlx_data.img, 0, 0);
-	find_wall(cub3d.plr, cub3d.map_data.map);
+	set_map(&cub3d, argc, argv);
+	find_walls(cub3d.plr, cub3d.map_data.map);
 	// mlx_loop(cub3d.mlx_data.mlx);
 }

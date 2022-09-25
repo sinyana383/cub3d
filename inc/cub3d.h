@@ -6,7 +6,7 @@
 /*   By: ddurrand <ddurrand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/19 14:16:12 by ddurrand          #+#    #+#             */
-/*   Updated: 2022/09/24 12:17:02 by ddurrand         ###   ########.fr       */
+/*   Updated: 2022/09/25 12:48:26 by ddurrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,9 @@ typedef struct s_cub3d
 # define WIN_WIDTH	640
 # define WIN_HEIGHT	480
 # define FOV 		1.0471975512 // угол обзора 60-ти градусов в радианах
+
+int		set_map(t_cub3d	*cub3d, int argc, char **argv);
+void	draw_floor_and_celling(t_mlx *data, int color_celling, int color_floor);
 
 #endif
 
