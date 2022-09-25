@@ -6,7 +6,7 @@
 /*   By: ddurrand <ddurrand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/19 14:12:00 by ddurrand          #+#    #+#             */
-/*   Updated: 2022/09/25 14:56:09 by ddurrand         ###   ########.fr       */
+/*   Updated: 2022/09/25 15:10:13 by ddurrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,11 +24,7 @@ void	draw_column(t_mlx *data, double ray, int x)
 	double	column_height;
 	int		y;
 
-	column_height = roundl(1.0 / ray * 1000) / 1000;
-	if (column_height - 1000.0 >= 0)
-		column_height = WIN_HEIGHT;
-	else
-		column_height = (int)(WIN_HEIGHT * column_height / 1000.0);
+	column_height = ray * WIN_HEIGHT / 4;
 	y = WIN_HEIGHT / 2 - roundl(column_height / 2);
 	while (y < WIN_HEIGHT / 2)
 	{
@@ -133,6 +129,7 @@ int	main(int argc, char **argv)
 {
 	t_cub3d	cub3d;
 
+	//https://lodev.org/cgtutor/raycasting.html - читай статью, и исправляй
 	set_map(&cub3d, argc, argv);
 	find_walls(&cub3d, cub3d.map_data.map);
 	mlx_put_image_to_window(cub3d.mlx_data.mlx, \
