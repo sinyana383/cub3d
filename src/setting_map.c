@@ -6,11 +6,33 @@
 /*   By: ddurrand <ddurrand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/25 12:29:11 by ddurrand          #+#    #+#             */
-/*   Updated: 2022/09/25 12:47:56 by ddurrand         ###   ########.fr       */
+/*   Updated: 2022/09/25 14:55:30 by ddurrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
+
+void	draw_floor_and_celling(t_mlx *data, int color_celling, int color_floor)
+{
+	int	x;
+	int	y;
+
+	y = 0;
+	while (y < WIN_HEIGHT / 2)
+	{
+		x = -1;
+		while (++x < WIN_WIDTH)
+			my_mlx_pixel_put(data, x, y, color_celling);
+		++y;
+	}
+	while (y < WIN_HEIGHT)
+	{
+		x = -1;
+		while (++x < WIN_WIDTH)
+			my_mlx_pixel_put(data, x, y, color_floor);
+		++y;
+	}
+}
 
 char	**get_map(int argc, char **argv)
 {
@@ -72,8 +94,6 @@ int	set_map(t_cub3d	*cub3d, int argc, char **argv)
 	WIN_WIDTH, WIN_HEIGHT);
 	cub3d->mlx_data.addr = mlx_get_data_addr(cub3d->mlx_data.img, \
 	&cub3d->mlx_data.bits_per_pixel, &cub3d->mlx_data.line_length, &cub3d->mlx_data.endian);
-	draw_floor_and_celling(&cub3d->mlx_data, 0x00F5F7F0, 0x00A284AB);
-	mlx_put_image_to_window(cub3d->mlx_data.mlx, \
-	cub3d->mlx_data.win, cub3d->mlx_data.img, 0, 0);
+	draw_floor_and_celling(&cub3d->mlx_data, 0x00FBF6E6, 0x00A284AB);
 	return (1);
 }

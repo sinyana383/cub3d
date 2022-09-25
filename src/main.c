@@ -6,7 +6,7 @@
 /*   By: ddurrand <ddurrand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/19 14:12:00 by ddurrand          #+#    #+#             */
-/*   Updated: 2022/09/25 13:33:51 by ddurrand         ###   ########.fr       */
+/*   Updated: 2022/09/25 14:56:09 by ddurrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,16 +19,27 @@ double	my_cos_sin(double angle, char s_c)
 	return (roundl(cosl(angle) * 100000) / 100000);
 }
 
-void	draw_column(double ray, int i)
+void	draw_column(t_mlx *data, double ray, int x)
 {
 	double	column_height;
+	int		y;
 
 	column_height = roundl(1.0 / ray * 1000) / 1000;
 	if (column_height - 1000.0 >= 0)
-		column_height = 100.0;	// 100% экрана
+		column_height = WIN_HEIGHT;
 	else
-		column_height = roundl(1.0 / ray * 1000) / 1000;
-	
+		column_height = (int)(WIN_HEIGHT * column_height / 1000.0);
+	y = WIN_HEIGHT / 2 - roundl(column_height / 2);
+	while (y < WIN_HEIGHT / 2)
+	{
+		my_mlx_pixel_put(data, x, y, 0x008C74AC);
+		++y;
+	}
+	while (y < WIN_HEIGHT / 2 + (column_height / 2))
+	{
+		my_mlx_pixel_put(data, x, y, 0x008C74AC);
+		++y;
+	}
 }
 
 double	ray_len(double ray, t_plr plr)
@@ -79,7 +90,7 @@ double	ray_len(double ray, t_plr plr)
 	return (del_y);
 }
 
-void	find_wall(t_plr plr, char **map)
+void	find_wall(t_plr plr, char **map, int i, t_mlx *data)
 {
 	double	ray;
 	int		x;
@@ -95,25 +106,27 @@ void	find_wall(t_plr plr, char **map)
 		y = floorl(plr.y - ray * my_cos_sin(plr.dir, 's'));
 	}
 	// определить какую ось по x и по y пересекли
-	printf("angle:%f\nx - %d y - %d, ray - %lf\n", \
-	plr.dir * (180.0 / M_PI), x, y, ray_len(ray, plr));
+	ray = ray_len(ray, plr);
+	draw_column(data, ray, i);
+	// printf("angle:%f\nx - %d y - %d, ray - %lf\n", \
+	// plr.dir * (180.0 / M_PI), x, y, );
 }
 
-void	find_walls(t_plr plr, char **map)
+void	find_walls(t_cub3d *cub3d, char **map)
 {
 	int		i;
 	double	dir;
 	double	rad_step;
 
-	dir = plr.dir;
+	dir = cub3d->plr.dir;
 	rad_step = FOV / (WIN_WIDTH - 1);
 	i = -1;
 	while (++i < WIN_WIDTH)
 	{
-		plr.dir = plr.start + i * rad_step;
-		find_wall(plr, map);
+		cub3d->plr.dir = cub3d->plr.start + i * rad_step;
+		find_wall(cub3d->plr, map, i, &cub3d->mlx_data);
 	}
-	plr.dir = dir;
+	cub3d->plr.dir = dir;
 }
 
 int	main(int argc, char **argv)
@@ -121,6 +134,8 @@ int	main(int argc, char **argv)
 	t_cub3d	cub3d;
 
 	set_map(&cub3d, argc, argv);
-	find_walls(cub3d.plr, cub3d.map_data.map);
-	// mlx_loop(cub3d.mlx_data.mlx);
+	find_walls(&cub3d, cub3d.map_data.map);
+	mlx_put_image_to_window(cub3d.mlx_data.mlx, \
+	cub3d.mlx_data.win, cub3d.mlx_data.img, 0, 0);
+	mlx_loop(cub3d.mlx_data.mlx);
 }
