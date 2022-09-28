@@ -6,7 +6,7 @@
 /*   By: ddurrand <ddurrand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/25 12:29:11 by ddurrand          #+#    #+#             */
-/*   Updated: 2022/09/28 13:06:18 by ddurrand         ###   ########.fr       */
+/*   Updated: 2022/09/28 16:26:39 by ddurrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,8 +63,8 @@ void	set_plr(char **map, t_plr *plr)
 		{
 			if (ft_strchr("NWES", map[y][x]))
 			{
-				plr->x = (double)x + 0.001; // чтобы хоть как-то показать, что игрок стоит не на границе клетки
-				plr->y = (double)y + 0.001;
+				plr->x = (double)x + 0.5; // чтобы хоть как-то показать, что игрок стоит не на границе клетки
+				plr->y = (double)y + 0.5;
 				if (map[y][x] == 'N')
 					plr->dir = M_PI / 2;
 				else if (map[y][x] == 'W')

@@ -6,7 +6,7 @@
 /*   By: ddurrand <ddurrand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/19 14:16:12 by ddurrand          #+#    #+#             */
-/*   Updated: 2022/09/25 15:09:47 by ddurrand         ###   ########.fr       */
+/*   Updated: 2022/09/28 17:01:03 by ddurrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,16 +74,8 @@ void	my_mlx_pixel_put(t_mlx *data, int x, int y, int color);
 	- Реализатор
 		- draw
 			+ draw_floor_and_celling: ходим по адрессам всех пикселей и окрашиваем их
-			- find walls
-				- читай статью https://lodev.org/cgtutor/raycasting.html
-				- !get ray-len
-			- draw_walls
-				- go along x and draw_lines
-					1. determine angle by radians
-					2. angle -> collision points
-					3. collision points -> high of line
-					4. print line by pixels
-				- или реализовать перпендикулярным ветором к направлению
+			+ draw_walls
+			- different colors for sides of walls
 		- hook
 	- Bonus
 		- миникарта - это отрисовка so_long-a

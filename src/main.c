@@ -6,7 +6,7 @@
 /*   By: ddurrand <ddurrand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/19 14:12:00 by ddurrand          #+#    #+#             */
-/*   Updated: 2022/09/28 14:23:20 by ddurrand         ###   ########.fr       */
+/*   Updated: 2022/09/28 16:24:44 by ddurrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,12 +99,12 @@ void	find_wall(t_plr plr, char **map, int i, t_mlx *data, double main_dir)
 	y = (int)plr.y;
 	while (ft_strchr("NWSE0", map[(int)y][(int)x]))
 	{
-		ray += 0.0001;		// лучше сделать с шагом по линиям, тип: x > 0 ceill(x),
+		ray += 0.001;		// лучше сделать с шагом по линиям, тип: x > 0 ceill(x),
 		x = (int)(plr.x + ray * cosl(plr.dir)); // my_cos_sin(plr.dir, 'c')
 		y = (int)(plr.y - ray * sinl(plr.dir)); //my_cos_sin(plr.dir, 's')
 	}
 	// определить какую ось по x и по y пересекли
-	draw_column(data, ray * cosl(plr.start - main_dir), i); // * cosl(plr.start - main_dir)
+	draw_column(data, ray * cosl(plr.dir - main_dir), i);
 	// printf("angle:%f\nx - %d y - %d, ray - %lf\n", \
 	// plr.dir * (180.0 / M_PI), x, y, );
 }
