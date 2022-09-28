@@ -6,7 +6,7 @@
 /*   By: ddurrand <ddurrand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/19 14:12:00 by ddurrand          #+#    #+#             */
-/*   Updated: 2022/09/25 15:10:13 by ddurrand         ###   ########.fr       */
+/*   Updated: 2022/09/28 14:23:20 by ddurrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,19 +19,21 @@ double	my_cos_sin(double angle, char s_c)
 	return (roundl(cosl(angle) * 100000) / 100000);
 }
 
-void	draw_column(t_mlx *data, double ray, int x)
+void	draw_column(t_mlx *data, double dist, int x)
 {
-	double	column_height;
+	double	half_column;
 	int		y;
 
-	column_height = ray * WIN_HEIGHT / 4;
-	y = WIN_HEIGHT / 2 - roundl(column_height / 2);
+	half_column = (int)(WIN_HEIGHT / dist / 2);
+	if (half_column > WIN_HEIGHT / 2)
+		half_column = WIN_HEIGHT / 2;
+	y = WIN_HEIGHT / 2 - (int)half_column; // half_column / 2 должно быть фиксированно
 	while (y < WIN_HEIGHT / 2)
 	{
 		my_mlx_pixel_put(data, x, y, 0x008C74AC);
 		++y;
 	}
-	while (y < WIN_HEIGHT / 2 + (column_height / 2))
+	while (y < (WIN_HEIGHT / 2 + (int)half_column))
 	{
 		my_mlx_pixel_put(data, x, y, 0x008C74AC);
 		++y;
@@ -86,7 +88,7 @@ double	ray_len(double ray, t_plr plr)
 	return (del_y);
 }
 
-void	find_wall(t_plr plr, char **map, int i, t_mlx *data)
+void	find_wall(t_plr plr, char **map, int i, t_mlx *data, double main_dir)
 {
 	double	ray;
 	int		x;
@@ -97,13 +99,12 @@ void	find_wall(t_plr plr, char **map, int i, t_mlx *data)
 	y = (int)plr.y;
 	while (ft_strchr("NWSE0", map[(int)y][(int)x]))
 	{
-		ray += 0.001;		// лучше сделать с шагом по линиям, тип: x > 0 ceill(x),
-		x = floorl(plr.x + ray * my_cos_sin(plr.dir, 'c'));
-		y = floorl(plr.y - ray * my_cos_sin(plr.dir, 's'));
+		ray += 0.0001;		// лучше сделать с шагом по линиям, тип: x > 0 ceill(x),
+		x = (int)(plr.x + ray * cosl(plr.dir)); // my_cos_sin(plr.dir, 'c')
+		y = (int)(plr.y - ray * sinl(plr.dir)); //my_cos_sin(plr.dir, 's')
 	}
 	// определить какую ось по x и по y пересекли
-	ray = ray_len(ray, plr);
-	draw_column(data, ray, i);
+	draw_column(data, ray * cosl(plr.start - main_dir), i); // * cosl(plr.start - main_dir)
 	// printf("angle:%f\nx - %d y - %d, ray - %lf\n", \
 	// plr.dir * (180.0 / M_PI), x, y, );
 }
@@ -119,8 +120,8 @@ void	find_walls(t_cub3d *cub3d, char **map)
 	i = -1;
 	while (++i < WIN_WIDTH)
 	{
-		cub3d->plr.dir = cub3d->plr.start + i * rad_step;
-		find_wall(cub3d->plr, map, i, &cub3d->mlx_data);
+		cub3d->plr.dir = cub3d->plr.start - i * rad_step;
+		find_wall(cub3d->plr, map, i, &cub3d->mlx_data, dir);
 	}
 	cub3d->plr.dir = dir;
 }

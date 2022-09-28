@@ -6,7 +6,7 @@
 /*   By: ddurrand <ddurrand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/25 12:29:11 by ddurrand          #+#    #+#             */
-/*   Updated: 2022/09/25 14:55:30 by ddurrand         ###   ########.fr       */
+/*   Updated: 2022/09/28 13:06:18 by ddurrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,8 +73,8 @@ void	set_plr(char **map, t_plr *plr)
 					plr->dir = 3 * (M_PI / 2);
 				else if (map[y][x] == 'E')
 					plr->dir = 0;
-				plr->start = plr->dir - FOV / 2;
-				plr->end = plr->dir + FOV / 2;
+				plr->start = plr->dir + FOV / 2;
+				plr->end = plr->dir - FOV / 2;
 				return ;
 			}
 		}
