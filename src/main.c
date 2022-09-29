@@ -6,7 +6,7 @@
 /*   By: ddurrand <ddurrand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/19 14:12:00 by ddurrand          #+#    #+#             */
-/*   Updated: 2022/09/29 15:02:31 by ddurrand         ###   ########.fr       */
+/*   Updated: 2022/09/29 17:44:36 by ddurrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,12 +80,12 @@ int	get_color(t_plr plr, double	x_y_rays[2])
 	if (x_y_rays[0] - x_y_rays[1] < 0)
 	{
 		if (cos(plr.dir) < 0)
-			return (0x005E5D2C);	//e
-		return (0x00ABAA72);		//w
+			return (0x00A257B9);	//e
+		return (0x00EABEF7);		//w
 	}
 	if (sin(plr.dir) < 0)
-		return (0x0047365E); 		//n
-	return (0x00D7BEF7);			//s
+		return (0x004C2957); 		//n
+	return (0x00715C78);			//s
 }
 
 void	get_ray_and_set_sotw(t_plr plr, t_map map, t_mlx *mlx, int x, double main_dir)	// side of the world

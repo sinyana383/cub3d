@@ -6,7 +6,7 @@
 /*   By: ddurrand <ddurrand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/19 14:16:12 by ddurrand          #+#    #+#             */
-/*   Updated: 2022/09/29 15:05:58 by ddurrand         ###   ########.fr       */
+/*   Updated: 2022/09/29 16:43:06 by ddurrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,10 +41,10 @@ typedef struct s_plr
 
 typedef struct s_map
 {
-	char			**map;			// карта, из char в int можно просто (int)var
-	char			*path[4];		// пути к текстуркам: [0,1,2,3] - north south east west
-	unsigned int	celling_color;	// 0,1,2,3 байты - прозрач,red,green,blue
-	unsigned int	floor_color;
+	char	**map;			// карта, из char в int можно просто (int)var
+	void	*textures[4];		// пути к текстуркам: [0,1,2,3] - north south east west
+	int		celling_color;	// 0,1,2,3 байты - прозрач,red,green,blue
+	int		floor_color;
 }	t_map;
 
 typedef struct s_cub3d
