@@ -6,7 +6,7 @@
 /*   By: ddurrand <ddurrand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/19 14:16:12 by ddurrand          #+#    #+#             */
-/*   Updated: 2022/09/29 16:43:06 by ddurrand         ###   ########.fr       */
+/*   Updated: 2022/09/29 18:00:20 by ddurrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,7 @@ typedef struct s_cub3d
 
 int		set_map(t_cub3d	*cub3d, int argc, char **argv);
 void	my_mlx_pixel_put(t_mlx *data, int x, int y, int color);
+void	find_dist_and_draw_column(t_cub3d *cub3d, int x, double main_dir);
 
 #endif
 

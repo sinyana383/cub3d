@@ -13,7 +13,8 @@ SRCS        = main.c \
 				get_lines.c get_lines_utils.c get_next_line.c get_next_line_utils.c\
 				ft_strlen.c ft_strnstr.c ft_strchr.c\
 				setting_map.c\
-				draw_fun.c
+				draw_fun.c\
+				find_dist_and_draw_column.c
 
 LIBS		= libs/libmlx/libmlx.a
 
