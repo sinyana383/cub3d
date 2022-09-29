@@ -6,7 +6,7 @@
 /*   By: ddurrand <ddurrand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/19 14:16:12 by ddurrand          #+#    #+#             */
-/*   Updated: 2022/09/28 17:01:03 by ddurrand         ###   ########.fr       */
+/*   Updated: 2022/09/29 15:05:58 by ddurrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,9 +75,12 @@ void	my_mlx_pixel_put(t_mlx *data, int x, int y, int color);
 		- draw
 			+ draw_floor_and_celling: ходим по адрессам всех пикселей и окрашиваем их
 			+ draw_walls
-			- different colors for sides of walls
+			+ different colors for sides of walls
+			- крутиться
+			- передвигаться
 		- hook
 	- Bonus
 		- миникарта - это отрисовка so_long-a
 		только в маленьком размере в одном из углу
+		- крутиться мышкой
 */
