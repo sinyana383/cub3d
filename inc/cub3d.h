@@ -6,7 +6,7 @@
 /*   By: ddurrand <ddurrand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/19 14:16:12 by ddurrand          #+#    #+#             */
-/*   Updated: 2022/09/30 13:41:37 by ddurrand         ###   ########.fr       */
+/*   Updated: 2022/09/30 17:26:10 by ddurrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,17 @@ typedef struct s_cub3d
 // DESINES
 # define WIN_WIDTH	640
 # define WIN_HEIGHT	480
+
 # define FOV 		1.0471975512 // угол обзора 60-ти градусов в радианах
+# define RAY_STEP	0.3
+
+# define LEFT_KEY	123
+# define RIGHT_KEY	124
+# define W_KEY		13
+# define A_KEY		0
+# define S_KEY		1
+# define D_KEY		2
+# define ESC_KEY	53
 
 int		set_map(t_cub3d	*cub3d, int argc, char **argv);
 void	my_mlx_pixel_put(t_mlx *data, int x, int y, int color);
@@ -72,17 +82,31 @@ void	find_dist_and_draw_column(t_cub3d *cub3d, int x, double main_dir);
 	- Парсер
 		входные данные: map.cub
 		выходные данные: структура t_map(смотри вверху)
-		- ?отразить карту по y, чтобы не заморачиваться?
 	- Реализатор
 		- draw
 			+ draw_floor_and_celling: ходим по адрессам всех пикселей и окрашиваем их
 			+ draw_walls
 			+ different colors for sides of walls
-			- крутиться
-			- передвигаться
-		- hook
+			- прорисовка текстур
+		- крутиться по стрелкам
+		- передвигаться по WASD
+		
 	- Bonus
 		- миникарта - это отрисовка so_long-a
 		только в маленьком размере в одном из углу
 		+ крутиться мышкой
+	- СЕГИ
+		- следи, чтобы в my_pixel_put были норм x и y
+	- ОШИБКИ
+		- подвигайся в этой карте с этим направлением
+		111111111111111
+		100000101010001
+		100000111011001
+		100000001101001
+		100000000000111
+		100000000011011
+		1000N0000001111
+		100000000001111
+		111111111111111
+		 4.40000000000000035527, y - 8.00000000000000000000
 */

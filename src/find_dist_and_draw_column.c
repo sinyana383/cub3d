@@ -6,7 +6,7 @@
 /*   By: ddurrand <ddurrand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/29 17:59:10 by ddurrand          #+#    #+#             */
-/*   Updated: 2022/09/29 18:00:06 by ddurrand         ###   ########.fr       */
+/*   Updated: 2022/09/30 16:23:09 by ddurrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,10 @@ void	draw_column(t_mlx *data, double dist, int x, int color)
 	double	half_column;
 	int		y;
 
-	half_column = (int)(WIN_HEIGHT / dist / 2);
+	if (dist - 0.1 < 0)
+		half_column = WIN_HEIGHT / 2;
+	else
+		half_column = (int)(WIN_HEIGHT / dist / 2);
 	if (half_column > WIN_HEIGHT / 2)
 		half_column = WIN_HEIGHT / 2;
 	y = WIN_HEIGHT / 2 - (int)half_column;
