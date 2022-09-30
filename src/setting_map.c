@@ -6,33 +6,11 @@
 /*   By: ddurrand <ddurrand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/25 12:29:11 by ddurrand          #+#    #+#             */
-/*   Updated: 2022/09/28 16:26:39 by ddurrand         ###   ########.fr       */
+/*   Updated: 2022/09/30 13:16:04 by ddurrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
-
-void	draw_floor_and_celling(t_mlx *data, int color_celling, int color_floor)
-{
-	int	x;
-	int	y;
-
-	y = 0;
-	while (y < WIN_HEIGHT / 2)
-	{
-		x = -1;
-		while (++x < WIN_WIDTH)
-			my_mlx_pixel_put(data, x, y, color_celling);
-		++y;
-	}
-	while (y < WIN_HEIGHT)
-	{
-		x = -1;
-		while (++x < WIN_WIDTH)
-			my_mlx_pixel_put(data, x, y, color_floor);
-		++y;
-	}
-}
 
 char	**get_map(int argc, char **argv)
 {
