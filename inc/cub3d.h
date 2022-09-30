@@ -6,7 +6,7 @@
 /*   By: ddurrand <ddurrand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/19 14:16:12 by ddurrand          #+#    #+#             */
-/*   Updated: 2022/09/29 18:00:20 by ddurrand         ###   ########.fr       */
+/*   Updated: 2022/09/30 11:41:33 by ddurrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,11 +32,11 @@ typedef struct s_mlx {
 
 typedef struct s_plr
 {
-	float	x;
-	float	y;
-	float	dir;
-	float	start;	// ? на каком месте поле зрения начинается
-	float	end;	// ? на каком месте поле зрения заканчивается на карте
+	double	x;
+	double	y;
+	double	dir;
+	double	start;	// ? на каком месте поле зрения начинается
+	double	end;	// ? на каком месте поле зрения заканчивается на карте
 }	t_plr;
 
 typedef struct s_map
