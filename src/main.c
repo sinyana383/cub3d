@@ -6,11 +6,16 @@
 /*   By: ddurrand <ddurrand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/19 14:12:00 by ddurrand          #+#    #+#             */
-/*   Updated: 2022/09/30 17:25:19 by ddurrand         ###   ########.fr       */
+/*   Updated: 2022/10/01 12:14:15 by ddurrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
+
+void	DEBUG(t_plr plr)
+{
+	printf("x - %.10f y - %.10f dir - %d\n", plr.x, plr.y, (int)(plr.dir * (180 / M_PI)) % 360);
+}
 
 void	draw_walls(t_cub3d *cub3d)
 {
@@ -47,22 +52,27 @@ void	move(t_plr *plr, char **map, double dir)
 		return ;
 	map[(int)plr->y][(int)plr->x] = '0';
 	map[(int)next_y][(int)next_x] = 'N';
-	plr->x = round(next_x * 10) / 10;
-	plr->y = round(next_y * 10) / 10;
-	printf("x - %.20f, y - %.20f\n", plr->x, plr->y);
+	plr->x = next_x;
+	plr->y = next_y;
+	DEBUG(*plr);
 }
+
+// void	rotate_camera(t_plr *plr)
+// {
+	
+// }
 
 int	key_hook(int keycode, t_cub3d *cub3d)
 {
 	if (keycode == W_KEY)
 		move(&cub3d->plr, cub3d->map_data.map, cub3d->plr.dir);
-	if (keycode == S_KEY)
+	else if (keycode == S_KEY)
 		move(&cub3d->plr, cub3d->map_data.map, cub3d->plr.dir - M_PI);
-	if (keycode == A_KEY)
+	else if (keycode == A_KEY)
 		move(&cub3d->plr, cub3d->map_data.map, cub3d->plr.dir + M_PI_2);
-	if (keycode == D_KEY)
+	else if (keycode == D_KEY)
 		move(&cub3d->plr, cub3d->map_data.map, cub3d->plr.dir - M_PI_2);
-	if (keycode == ESC_KEY)
+	else if (keycode == ESC_KEY)
 		exit_hook(cub3d);
 	return (0);
 }
@@ -91,7 +101,7 @@ int	render_next_frame(void *given_struct)
 	t_cub3d	*cub3d;
 
 	cub3d = (t_cub3d *)given_struct;
-	bonus_mouse_rotate(cub3d);
+	// bonus_mouse_rotate(cub3d);
 	draw_floor_and_celling(&cub3d->mlx_data, 0x00FBF6E6, 0x00A284AB);
 	draw_walls(cub3d);
 	mlx_put_image_to_window(cub3d->mlx_data.mlx, \

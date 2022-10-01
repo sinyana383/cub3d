@@ -6,7 +6,7 @@
 /*   By: ddurrand <ddurrand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/19 14:16:12 by ddurrand          #+#    #+#             */
-/*   Updated: 2022/09/30 17:26:10 by ddurrand         ###   ########.fr       */
+/*   Updated: 2022/10/01 12:06:50 by ddurrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ typedef struct s_cub3d
 # define WIN_HEIGHT	480
 
 # define FOV 		1.0471975512 // угол обзора 60-ти градусов в радианах
-# define RAY_STEP	0.3
+# define RAY_STEP	0.2
 
 # define LEFT_KEY	123
 # define RIGHT_KEY	124
@@ -73,6 +73,9 @@ int		set_map(t_cub3d	*cub3d, int argc, char **argv);
 void	my_mlx_pixel_put(t_mlx *data, int x, int y, int color);
 void	draw_floor_and_celling(t_mlx *data, int color_celling, int color_floor);
 void	find_dist_and_draw_column(t_cub3d *cub3d, int x, double main_dir);
+
+// DELETE
+void 	DEBUG();
 
 #endif
 

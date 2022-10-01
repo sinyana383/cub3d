@@ -6,7 +6,7 @@
 /*   By: ddurrand <ddurrand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/29 17:59:10 by ddurrand          #+#    #+#             */
-/*   Updated: 2022/09/30 16:23:09 by ddurrand         ###   ########.fr       */
+/*   Updated: 2022/10/01 11:30:48 by ddurrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,6 +111,7 @@ void	find_dist_and_draw_column(t_cub3d *cub3d, int x, double main_dir)
 		ray = x_y_rays[0];
 	else
 		ray = x_y_rays[1];
+	DEBUG(cub3d->plr);
 	draw_column(&cub3d->mlx_data, ray * cos(cub3d->plr.dir - main_dir), \
 	x, get_color(cub3d->plr, x_y_rays));
 }
