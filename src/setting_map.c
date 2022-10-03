@@ -6,7 +6,7 @@
 /*   By: ddurrand <ddurrand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/25 12:29:11 by ddurrand          #+#    #+#             */
-/*   Updated: 2022/09/30 13:16:04 by ddurrand         ###   ########.fr       */
+/*   Updated: 2022/10/03 13:42:47 by ddurrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,28 @@ char	**get_map(int argc, char **argv)
 		return (0);
 	map = get_map_from_file(fd, argv[1]);
 	return (map);
+}
+
+void	set_map_data(t_cub3d *cub3d)
+{
+	t_map	*map_data;
+	t_mlx	*mlx;
+
+	map_data = &cub3d->map_data;
+	mlx = cub3d->mlx_data.mlx;
+	map_data->textures[0] = mlx_xpm_file_to_image \
+	(mlx, "textures/north.xpm", &map_data->text_w_h[0], &map_data->text_w_h[1]);
+	map_data->textures[1] = mlx_xpm_file_to_image \
+	(mlx, "textures/south.xpm", &map_data->text_w_h[0], &map_data->text_w_h[1]);
+	map_data->textures[2] = mlx_xpm_file_to_image \
+	(mlx, "textures/east.xpm", &map_data->text_w_h[0], &map_data->text_w_h[1]);
+	map_data->textures[3] = mlx_xpm_file_to_image \
+	(mlx, "textures/west.xpm", &map_data->text_w_h[0], &map_data->text_w_h[1]);
+	if (map_data->textures[0] && map_data->textures[1] && \
+	map_data->textures[2] && map_data->textures[3])
+		return ;
+	printf("texture opening error\n");
+	exit (EXIT_FAILURE);
 }
 
 void	set_plr(char **map, t_plr *plr)
@@ -66,12 +88,13 @@ int	set_map(t_cub3d	*cub3d, int argc, char **argv)
 		exit(0);
 	set_plr(cub3d->map_data.map, &cub3d->plr);
 	cub3d->mlx_data.mlx = mlx_init();
+	set_map_data(cub3d);
 	cub3d->mlx_data.win = mlx_new_window(cub3d->mlx_data.mlx, \
 	WIN_WIDTH, WIN_HEIGHT, "cub3d");
 	cub3d->mlx_data.img = mlx_new_image(cub3d->mlx_data.mlx, \
 	WIN_WIDTH, WIN_HEIGHT);
 	cub3d->mlx_data.addr = mlx_get_data_addr(cub3d->mlx_data.img, \
 	&cub3d->mlx_data.bits_per_pixel, &cub3d->mlx_data.line_length, &cub3d->mlx_data.endian);
-	draw_floor_and_celling(&cub3d->mlx_data, 0x00FBF6E6, 0x00A284AB);
+	draw_floor_and_celling(&cub3d->mlx_data, 0x00C8E8FC, 0x00293640);
 	return (1);
 }

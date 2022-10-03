@@ -6,7 +6,7 @@
 /*   By: ddurrand <ddurrand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/19 14:12:00 by ddurrand          #+#    #+#             */
-/*   Updated: 2022/10/01 12:14:15 by ddurrand         ###   ########.fr       */
+/*   Updated: 2022/10/03 14:15:24 by ddurrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,21 +46,15 @@ void	move(t_plr *plr, char **map, double dir)
 	double	next_x;
 	double	next_y;
 
-	next_x = plr->x + cos(dir) * RAY_STEP;
-	next_y = plr->y - sin(dir) * RAY_STEP;
+	next_x = plr->x + cos(dir) * MOVE_STEP;
+	next_y = plr->y - sin(dir) * MOVE_STEP;
 	if (!ft_strchr("NSWE0", map[(int)next_y][(int)next_x]))
 		return ;
 	map[(int)plr->y][(int)plr->x] = '0';
 	map[(int)next_y][(int)next_x] = 'N';
 	plr->x = next_x;
 	plr->y = next_y;
-	DEBUG(*plr);
 }
-
-// void	rotate_camera(t_plr *plr)
-// {
-	
-// }
 
 int	key_hook(int keycode, t_cub3d *cub3d)
 {
@@ -72,6 +66,10 @@ int	key_hook(int keycode, t_cub3d *cub3d)
 		move(&cub3d->plr, cub3d->map_data.map, cub3d->plr.dir + M_PI_2);
 	else if (keycode == D_KEY)
 		move(&cub3d->plr, cub3d->map_data.map, cub3d->plr.dir - M_PI_2);
+	else if (keycode == LEFT_KEY)
+		cub3d->plr.dir += ROT_STEP * 1;
+	else if (keycode == RIGHT_KEY)
+		cub3d->plr.dir += ROT_STEP * -1;
 	else if (keycode == ESC_KEY)
 		exit_hook(cub3d);
 	return (0);
@@ -101,8 +99,8 @@ int	render_next_frame(void *given_struct)
 	t_cub3d	*cub3d;
 
 	cub3d = (t_cub3d *)given_struct;
-	// bonus_mouse_rotate(cub3d);
-	draw_floor_and_celling(&cub3d->mlx_data, 0x00FBF6E6, 0x00A284AB);
+	bonus_mouse_rotate(cub3d);
+	draw_floor_and_celling(&cub3d->mlx_data, 0x00C8E8FC, 0x00293640);
 	draw_walls(cub3d);
 	mlx_put_image_to_window(cub3d->mlx_data.mlx, \
 	cub3d->mlx_data.win, cub3d->mlx_data.img, 0, 0);
@@ -118,5 +116,7 @@ int	main(int argc, char **argv)
 	mlx_mouse_move(cub3d.mlx_data.win, WIN_WIDTH / 2 , WIN_HEIGHT / 2);
 	mlx_hook(cub3d.mlx_data.win, 2, 0, key_hook, &cub3d);
 	mlx_loop_hook(cub3d.mlx_data.mlx, render_next_frame, &cub3d);
+	mlx_put_image_to_window(cub3d.mlx_data.mlx, \
+	cub3d.mlx_data.win, cub3d.mlx_data.img, 0, 0);
 	mlx_loop(cub3d.mlx_data.mlx);
 }

@@ -6,7 +6,7 @@
 /*   By: ddurrand <ddurrand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/19 14:16:12 by ddurrand          #+#    #+#             */
-/*   Updated: 2022/10/01 12:06:50 by ddurrand         ###   ########.fr       */
+/*   Updated: 2022/10/03 12:50:13 by ddurrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ typedef struct s_mlx {
 	void	*mlx;
 	void	*win;
 	void	*img;
-	char	*addr;
+	char	*addr;			// массив 
 	int		bits_per_pixel;
 	int		line_length;
 	int		endian;
@@ -43,6 +43,7 @@ typedef struct s_map
 {
 	char	**map;			// карта, из char в int можно просто (int)var
 	void	*textures[4];		// пути к текстуркам: [0,1,2,3] - north south east west
+	int		text_w_h[2];
 	int		celling_color;	// 0,1,2,3 байты - прозрач,red,green,blue
 	int		floor_color;
 }	t_map;
@@ -59,7 +60,8 @@ typedef struct s_cub3d
 # define WIN_HEIGHT	480
 
 # define FOV 		1.0471975512 // угол обзора 60-ти градусов в радианах
-# define RAY_STEP	0.2
+# define ROT_STEP	0.0924291465 // угол поворота 10-ти градусов
+# define MOVE_STEP	0.2
 
 # define LEFT_KEY	123
 # define RIGHT_KEY	124
@@ -91,17 +93,22 @@ void 	DEBUG();
 			+ draw_walls
 			+ different colors for sides of walls
 			- прорисовка текстур
-		- крутиться по стрелкам
-		- передвигаться по WASD
+	- Hooks
+		+ крутиться по стрелкам
+		+ передвигаться по WASD
+		- закрытие на крестик
 		
 	- Bonus
+		+ крутиться мышкой
 		- миникарта - это отрисовка so_long-a
 		только в маленьком размере в одном из углу
-		+ крутиться мышкой
+		- не проходит через стены
+			- между двумя кубиками в углу нельзя протиснуться
+			- через уголки стен нельзя проходить
+			- скольжение по стенке
 	- СЕГИ
 		- следи, чтобы в my_pixel_put были норм x и y
-	- ОШИБКИ
-		- подвигайся в этой карте с этим направлением
+	- БАГИ
 		111111111111111
 		100000101010001
 		100000111011001
@@ -111,5 +118,4 @@ void 	DEBUG();
 		1000N0000001111
 		100000000001111
 		111111111111111
-		 4.40000000000000035527, y - 8.00000000000000000000
 */

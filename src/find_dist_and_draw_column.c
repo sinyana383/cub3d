@@ -6,17 +6,27 @@
 /*   By: ddurrand <ddurrand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/29 17:59:10 by ddurrand          #+#    #+#             */
-/*   Updated: 2022/10/01 11:30:48 by ddurrand         ###   ########.fr       */
+/*   Updated: 2022/10/03 14:15:40 by ddurrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
-void	draw_column(t_mlx *data, double dist, int x, int color)
+unsigned int	get_img_color(t_mlx data, int x, int y)
 {
+	char	*color;
+
+	color = data.addr + (y * data.line_length + x * (data.bits_per_pixel / 8));
+	return (*(unsigned int *)color);
+}
+
+void	draw_column(t_cub3d *cub3d, double dist, int x, void *texture)
+{
+	t_mlx	*data;
 	double	half_column;
 	int		y;
 
+	data = &cub3d->mlx_data;
 	if (dist - 0.1 < 0)
 		half_column = WIN_HEIGHT / 2;
 	else
@@ -26,12 +36,12 @@ void	draw_column(t_mlx *data, double dist, int x, int color)
 	y = WIN_HEIGHT / 2 - (int)half_column;
 	while (y < WIN_HEIGHT / 2)
 	{
-		my_mlx_pixel_put(data, x, y, color);
+		my_mlx_pixel_put(data, x, y, 0x00A257B9);
 		++y;
 	}
 	while (y < (WIN_HEIGHT / 2 + (int)half_column))
 	{
-		my_mlx_pixel_put(data, x, y, color);
+		my_mlx_pixel_put(data, x, y, 0x00EABEF7);
 		++y;
 	}
 }
@@ -78,17 +88,17 @@ void	set_rays(t_plr plr, double x_y_rays[2], int x_y_cur[2], \
 		x_y_cur[1] += x_y_steps[1];
 }
 
-int	get_color(t_plr plr, double x_y_rays[2])
+void	*get_texture(t_plr plr, double x_y_rays[2], void *textures[4])
 {
 	if (x_y_rays[0] - x_y_rays[1] < 0)
 	{
 		if (cos(plr.dir) < 0)
-			return (0x00A257B9);	//e
-		return (0x00EABEF7);		//w
+			return (textures[2]);	//e
+		return (textures[3]);		//w
 	}
 	if (sin(plr.dir) < 0)
-		return (0x004C2957); 		//n
-	return (0x00715C78);			//s
+		return (textures[0]); 		//n
+	return (textures[1]);			//s
 }
 
 void	find_dist_and_draw_column(t_cub3d *cub3d, int x, double main_dir)
@@ -111,7 +121,6 @@ void	find_dist_and_draw_column(t_cub3d *cub3d, int x, double main_dir)
 		ray = x_y_rays[0];
 	else
 		ray = x_y_rays[1];
-	DEBUG(cub3d->plr);
-	draw_column(&cub3d->mlx_data, ray * cos(cub3d->plr.dir - main_dir), \
-	x, get_color(cub3d->plr, x_y_rays));
+	draw_column(cub3d, ray * cos(cub3d->plr.dir - main_dir), \
+	x, get_texture(cub3d->plr, x_y_rays, cub3d->map_data.textures));
 }
