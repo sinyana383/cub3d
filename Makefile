@@ -14,7 +14,7 @@ SRCS        = main.c \
 				ft_strlen.c ft_strnstr.c ft_strchr.c\
 				setting_map.c\
 				draw_fun.c\
-				find_dist_and_draw_column.c
+				find_dist_and_draw_column.c draw_column.c
 
 LIBS		= libs/libmlx/libmlx.a
 

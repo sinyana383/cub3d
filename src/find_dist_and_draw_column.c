@@ -6,65 +6,14 @@
 /*   By: ddurrand <ddurrand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/29 17:59:10 by ddurrand          #+#    #+#             */
-/*   Updated: 2022/10/03 15:29:37 by ddurrand         ###   ########.fr       */
+/*   Updated: 2022/10/03 17:17:19 by ddurrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
-unsigned int	get_img_color(t_mlx data, int x, int y)
-{
-	char	*color;
-
-	color = data.addr + (y * data.line_length + x * (data.bits_per_pixel / 8));
-	return (*(unsigned int *)color);
-}
-
-unsigned int	get_color(t_cub3d *cub3d, void *texture, double x_y_rays[2], int column, int y)
-{
-	int		i_column;	// колонка картинки
-	int		img_y;
-	int		k;
-	double	point;
-
-	if (x_y_rays[0] - x_y_rays[1] < 0)
-		point = cub3d->plr.y - x_y_rays[0] * sin(cub3d->plr.dir);
-	else
-		point = cub3d->plr.x + x_y_rays[1] * cos(cub3d->plr.dir);
-	k = point - (int)point;
-	i_column = round(k * cub3d->map_data.text_w_h[0]);
-	img_y = round(cub3d->map_data.text_w_h[1] / column * y);
-	return (get_img_color(cub3d->mlx_data, i_column, img_y));
-}
-
-void	draw_column(t_cub3d *cub3d, double dist, int x, void *texture, double x_y_rays[2])
-{
-	t_mlx	*data;
-	double	half_column;
-	int		y;
-
-	data = &cub3d->mlx_data;
-	if (dist - 0.1 < 0)
-		half_column = WIN_HEIGHT / 2;
-	else
-		half_column = (int)(WIN_HEIGHT / dist / 2);
-	if (half_column > WIN_HEIGHT / 2)
-		half_column = WIN_HEIGHT / 2;
-	y = WIN_HEIGHT / 2 - (int)half_column;
-	while (y < WIN_HEIGHT / 2)
-	{
-		my_mlx_pixel_put(data, x, y, 0x00A257B9);
-		++y;
-	}
-	while (y < (WIN_HEIGHT / 2 + (int)half_column))
-	{
-		my_mlx_pixel_put(data, x, y, 0x00EABEF7);
-		++y;
-	}
-}
-
 void	set_start_rays_and_steps(t_plr plr, double *ray_x, double *ray_y, \
-						int x_y_steps[2])
+								int x_y_steps[2])
 {
 	double	del;
 
@@ -105,39 +54,24 @@ void	set_rays(t_plr plr, double x_y_rays[2], int x_y_cur[2], \
 		x_y_cur[1] += x_y_steps[1];
 }
 
-void	*get_texture(t_plr plr, double x_y_rays[2], void *textures[4])
-{
-	if (x_y_rays[0] - x_y_rays[1] < 0)
-	{
-		if (cos(plr.dir) < 0)
-			return (textures[2]);	//e
-		return (textures[3]);		//w
-	}
-	if (sin(plr.dir) < 0)
-		return (textures[0]); 		//n
-	return (textures[1]);			//s
-}
-
 void	find_dist_and_draw_column(t_cub3d *cub3d, int x, double main_dir)
 {
-	int		x_y_cur[2];
-	int		x_y_steps[2];
-	double	x_y_rays[2];
-	double	ray;
+	t_dda	dda;
 
-	set_start_rays_and_steps(cub3d->plr, &x_y_rays[0], &x_y_rays[1], x_y_steps);
-	x_y_cur[0] = floor(cub3d->plr.x);
-	x_y_cur[1] = floor(cub3d->plr.y);
-	if (x_y_rays[0] - x_y_rays[1] < 0)
-		x_y_cur[0] += x_y_steps[0];
+	set_start_rays_and_steps(cub3d->plr, &dda.x_y_rays[0], \
+	&dda.x_y_rays[1], dda.x_y_steps);
+	dda.x_y_cur[0] = floor(cub3d->plr.x);
+	dda.x_y_cur[1] = floor(cub3d->plr.y);
+	if (dda.x_y_rays[0] - dda.x_y_rays[1] < 0)
+		dda.x_y_cur[0] += dda.x_y_steps[0];
 	else
-		x_y_cur[1] += x_y_steps[1];
-	while (ft_strchr("NWSE0", cub3d->map_data.map[x_y_cur[1]][x_y_cur[0]]))
-		set_rays(cub3d->plr, x_y_rays, x_y_cur, x_y_steps);
-	if (x_y_rays[0] - x_y_rays[1] < 0)
-		ray = x_y_rays[0];
+		dda.x_y_cur[1] += dda.x_y_steps[1];
+	while (ft_strchr("NWSE0", \
+	cub3d->map_data.map[dda.x_y_cur[1]][dda.x_y_cur[0]]))
+		set_rays(cub3d->plr, dda.x_y_rays, dda.x_y_cur, dda.x_y_steps);
+	if (dda.x_y_rays[0] - dda.x_y_rays[1] < 0)
+		dda.dist = dda.x_y_rays[0] * cos(cub3d->plr.dir - main_dir);
 	else
-		ray = x_y_rays[1];
-	draw_column(cub3d, ray * cos(cub3d->plr.dir - main_dir), \
-	x, get_texture(cub3d->plr, x_y_rays, cub3d->map_data.textures), x_y_rays);
+		dda.dist = dda.x_y_rays[1] * cos(cub3d->plr.dir - main_dir);
+	draw_column(cub3d, dda, x);
 }

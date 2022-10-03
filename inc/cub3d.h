@@ -6,7 +6,7 @@
 /*   By: ddurrand <ddurrand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/19 14:16:12 by ddurrand          #+#    #+#             */
-/*   Updated: 2022/10/03 12:50:13 by ddurrand         ###   ########.fr       */
+/*   Updated: 2022/10/03 17:17:29 by ddurrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,14 @@
 # include <stdio.h>
 # include <stdlib.h>
 # include <fcntl.h>
+
+typedef struct s_dda
+{
+	int		x_y_cur[2];
+	int		x_y_steps[2];
+	double	x_y_rays[2];
+	double	dist;
+}	t_dda;
 
 typedef struct s_mlx {
 	void	*mlx;
@@ -75,6 +83,7 @@ int		set_map(t_cub3d	*cub3d, int argc, char **argv);
 void	my_mlx_pixel_put(t_mlx *data, int x, int y, int color);
 void	draw_floor_and_celling(t_mlx *data, int color_celling, int color_floor);
 void	find_dist_and_draw_column(t_cub3d *cub3d, int x, double main_dir);
+void	draw_column(t_cub3d *cub3d, t_dda dda, int x);
 
 // DELETE
 void 	DEBUG();
