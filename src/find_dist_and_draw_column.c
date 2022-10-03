@@ -6,7 +6,7 @@
 /*   By: ddurrand <ddurrand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/29 17:59:10 by ddurrand          #+#    #+#             */
-/*   Updated: 2022/10/03 14:15:40 by ddurrand         ###   ########.fr       */
+/*   Updated: 2022/10/03 15:29:37 by ddurrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,24 @@ unsigned int	get_img_color(t_mlx data, int x, int y)
 	return (*(unsigned int *)color);
 }
 
-void	draw_column(t_cub3d *cub3d, double dist, int x, void *texture)
+unsigned int	get_color(t_cub3d *cub3d, void *texture, double x_y_rays[2], int column, int y)
+{
+	int		i_column;	// колонка картинки
+	int		img_y;
+	int		k;
+	double	point;
+
+	if (x_y_rays[0] - x_y_rays[1] < 0)
+		point = cub3d->plr.y - x_y_rays[0] * sin(cub3d->plr.dir);
+	else
+		point = cub3d->plr.x + x_y_rays[1] * cos(cub3d->plr.dir);
+	k = point - (int)point;
+	i_column = round(k * cub3d->map_data.text_w_h[0]);
+	img_y = round(cub3d->map_data.text_w_h[1] / column * y);
+	return (get_img_color(cub3d->mlx_data, i_column, img_y));
+}
+
+void	draw_column(t_cub3d *cub3d, double dist, int x, void *texture, double x_y_rays[2])
 {
 	t_mlx	*data;
 	double	half_column;
@@ -122,5 +139,5 @@ void	find_dist_and_draw_column(t_cub3d *cub3d, int x, double main_dir)
 	else
 		ray = x_y_rays[1];
 	draw_column(cub3d, ray * cos(cub3d->plr.dir - main_dir), \
-	x, get_texture(cub3d->plr, x_y_rays, cub3d->map_data.textures));
+	x, get_texture(cub3d->plr, x_y_rays, cub3d->map_data.textures), x_y_rays);
 }
