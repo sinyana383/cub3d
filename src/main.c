@@ -6,7 +6,7 @@
 /*   By: ddurrand <ddurrand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/19 14:12:00 by ddurrand          #+#    #+#             */
-/*   Updated: 2022/10/03 14:15:24 by ddurrand         ###   ########.fr       */
+/*   Updated: 2022/10/03 18:30:46 by ddurrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,14 @@ void	draw_walls(t_cub3d *cub3d)
 
 int	exit_hook(t_cub3d *cub3d)
 {
-	(void)cub3d;
+	int		i;
+	char	**map;
+
+	map = cub3d->map_data.map;
+	i = -1;
+	while (map[++i])
+		free(map[i]);
+	free(map);
 	exit(EXIT_SUCCESS);
 }
 
@@ -82,7 +89,7 @@ void	bonus_mouse_rotate(t_cub3d *cub3d)
 	int				del_x;
 	int				tmp_y;
 
-	mlx_mouse_hide();
+	// mlx_mouse_hide();
 	mlx_mouse_get_pos(cub3d->mlx_data.win, &x, &tmp_y);
 	del_x = x - tmp_x;
 	tmp_x = x;
@@ -115,6 +122,7 @@ int	main(int argc, char **argv)
 	draw_walls(&cub3d);
 	mlx_mouse_move(cub3d.mlx_data.win, WIN_WIDTH / 2 , WIN_HEIGHT / 2);
 	mlx_hook(cub3d.mlx_data.win, 2, 0, key_hook, &cub3d);
+	mlx_hook(cub3d.mlx_data.win, 17, 0, exit_hook, &cub3d);
 	mlx_loop_hook(cub3d.mlx_data.mlx, render_next_frame, &cub3d);
 	mlx_put_image_to_window(cub3d.mlx_data.mlx, \
 	cub3d.mlx_data.win, cub3d.mlx_data.img, 0, 0);

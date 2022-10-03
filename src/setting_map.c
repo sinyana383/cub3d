@@ -6,7 +6,7 @@
 /*   By: ddurrand <ddurrand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/25 12:29:11 by ddurrand          #+#    #+#             */
-/*   Updated: 2022/10/03 13:42:47 by ddurrand         ###   ########.fr       */
+/*   Updated: 2022/10/03 18:26:42 by ddurrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,7 +85,7 @@ int	set_map(t_cub3d	*cub3d, int argc, char **argv)
 {
 	cub3d->map_data.map = get_map(argc, argv);
 	if (!cub3d->map_data.map)
-		exit(0);
+		exit(EXIT_FAILURE);
 	set_plr(cub3d->map_data.map, &cub3d->plr);
 	cub3d->mlx_data.mlx = mlx_init();
 	set_map_data(cub3d);
