@@ -6,7 +6,7 @@
 /*   By: ddurrand <ddurrand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/29 17:59:10 by ddurrand          #+#    #+#             */
-/*   Updated: 2022/10/07 18:12:19 by ddurrand         ###   ########.fr       */
+/*   Updated: 2022/10/11 14:23:25 by ddurrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ void	set_rays(t_plr plr, double x_y_rays[2], int x_y_cur[2], \
 				int x_y_steps[2])
 {
 	if (x_y_rays[0] - x_y_rays[1] < 0)
-		x_y_rays[0] += sqrt(1.0 + tan(plr.dir) * tan(plr.dir)); // 1.0 == x_y_steps[0,1] * x_y_steps[0,1]
+		x_y_rays[0] += sqrt(1.0 + tan(plr.dir) * tan(plr.dir));
 	else
 		x_y_rays[1] += sqrt(1.0 + 1.0 / tan(plr.dir) * 1.0 / tan(plr.dir));
 	if (x_y_rays[0] - x_y_rays[1] < 0)

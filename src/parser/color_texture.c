@@ -6,7 +6,7 @@
 /*   By: ddurrand <ddurrand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/10 18:09:35 by chawke            #+#    #+#             */
-/*   Updated: 2022/10/11 14:11:27 by ddurrand         ###   ########.fr       */
+/*   Updated: 2022/10/11 14:53:04 by ddurrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ int	texture_save(char *line, char *s, int i, t_cub3d *cub)
 		(void)s;
 		exit(1);
 		// bad_error(s, "", 1);	// что писать на место ковычек? и вообще как будет все чистится?
-		return (0);	// зачем return, если bad_error exit()?
+		return (0);	// зачем return, если в bad_error есть exit()?
 	}
 	else
 		return (1);

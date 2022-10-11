@@ -6,7 +6,7 @@
 /*   By: ddurrand <ddurrand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/19 14:16:12 by ddurrand          #+#    #+#             */
-/*   Updated: 2022/10/11 13:58:27 by ddurrand         ###   ########.fr       */
+/*   Updated: 2022/10/11 14:59:58 by ddurrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ typedef struct s_mlx {
 	void	*mlx;
 	void	*win;
 	void	*img;
-	char	*addr;			// массив 
+	char	*addr;
 	int		bits_per_pixel;
 	int		line_length;
 	int		endian;
@@ -43,14 +43,14 @@ typedef struct s_plr
 	double	x;
 	double	y;
 	double	dir;
-	double	start;	// ? на каком месте поле зрения начинается
-	double	end;	// ? на каком месте поле зрения заканчивается на карте
+	double	start;
+	double	end;
 }	t_plr;
 
 typedef struct s_map
 {
-	char		**map;			// карта, из char в int можно просто (int)var
-	void		*textures[4];		// пути к текстуркам: [0,1,2,3] - north south east west
+	char		**map;
+	void		*textures[4];
 	int			text_w_h[2];
 	int			color[2];
 }	t_map;
@@ -66,8 +66,8 @@ typedef struct s_cub3d
 # define WIN_WIDTH	640
 # define WIN_HEIGHT	480
 
-# define FOV 		1.0471975512 // угол обзора 60-ти градусов в радианах
-# define ROT_STEP	0.0924291465 // угол поворота 10-ти градусов
+# define FOV 		1.0471975512
+# define ROT_STEP	0.0924291465
 # define MOVE_STEP	0.2
 
 # define LEFT_KEY	123
@@ -79,54 +79,16 @@ typedef struct s_cub3d
 # define ESC_KEY	53
 
 void	reed_file(t_cub3d *cub, char *name);
+
+int		key_hook(int keycode, t_cub3d *cub3d);
+int		exit_hook(t_cub3d *cub3d);
+
 void	my_mlx_pixel_put(t_mlx *data, int x, int y, int color);
 void	draw_floor_and_celling(t_mlx *data, int color_celling, int color_floor);
+
 void	find_dist_and_draw_column(t_cub3d *cub3d, int x, double main_dir);
 void	draw_column(t_cub3d *cub3d, t_dda dda, int x);
-
-// DELETE
-void 	DEBUG();
+void	set_img_x_and_data_tex(int *img_x, t_cub3d *cub3d, \
+								double x_y_rays[2], t_mlx *data_tex);
 
 #endif
-
-/*
-	Две части и бонус:
-	
-	- Парсер
-		входные данные: map.cub
-		выходные данные: структура t_map(смотри вверху)
-	+ Реализатор
-		+ draw
-			+ draw_floor_and_celling: ходим по адрессам всех пикселей и окрашиваем их
-			+ draw_walls
-			+ different colors for sides of walls
-			+ прорисовка текстур
-	+ Hooks
-		+ крутиться по стрелкам
-		+ передвигаться по WASD
-		+ закрытие на крестик
-	- Выходы при ошибке и без ликов
-	
-	- Bonus
-		- крутиться мышкой
-			- в самом начале положение мышки не менять
-		- миникарта - это отрисовка so_long-a
-		только в маленьком размере в одном из углу
-		- не проходит через стены
-			- между двумя кубиками в углу нельзя протиснуться
-			- через уголки стен нельзя проходить
-			- скольжение по стенке
-	- Возможные ошибки
-		- следи, чтобы в my_pixel_put были норм x и y
-		- следи, чтобы в get_img_color были норм x и y
-
-		111111111111111
-		100000101010001
-		100000111011001
-		100000001101001
-		100000000000111
-		100000000011011
-		1000N0000001111
-		100000000001111
-		111111111111111
-*/

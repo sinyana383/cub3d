@@ -6,7 +6,7 @@
 /*   By: ddurrand <ddurrand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/10 18:26:30 by chawke            #+#    #+#             */
-/*   Updated: 2022/10/11 13:31:36 by ddurrand         ###   ########.fr       */
+/*   Updated: 2022/10/11 15:00:08 by ddurrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,8 @@
 # define PARSE_H
 
 # include <fcntl.h>
-#include "cub3d.h"
-#include "libft.h"
+# include "cub3d.h"
+# include "libft.h"
 
 # define NO 0
 # define SO 1
