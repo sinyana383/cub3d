@@ -6,7 +6,7 @@
 /*   By: ddurrand <ddurrand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/19 14:16:12 by ddurrand          #+#    #+#             */
-/*   Updated: 2022/10/03 18:32:45 by ddurrand         ###   ########.fr       */
+/*   Updated: 2022/10/11 13:58:27 by ddurrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,11 +49,10 @@ typedef struct s_plr
 
 typedef struct s_map
 {
-	char	**map;			// карта, из char в int можно просто (int)var
-	void	*textures[4];		// пути к текстуркам: [0,1,2,3] - north south east west
-	int		text_w_h[2];
-	int		celling_color;	// 0,1,2,3 байты - прозрач,red,green,blue
-	int		floor_color;
+	char		**map;			// карта, из char в int можно просто (int)var
+	void		*textures[4];		// пути к текстуркам: [0,1,2,3] - north south east west
+	int			text_w_h[2];
+	int			color[2];
 }	t_map;
 
 typedef struct s_cub3d
@@ -79,7 +78,7 @@ typedef struct s_cub3d
 # define D_KEY		2
 # define ESC_KEY	53
 
-int		set_map(t_cub3d	*cub3d, int argc, char **argv);
+void	reed_file(t_cub3d *cub, char *name);
 void	my_mlx_pixel_put(t_mlx *data, int x, int y, int color);
 void	draw_floor_and_celling(t_mlx *data, int color_celling, int color_floor);
 void	find_dist_and_draw_column(t_cub3d *cub3d, int x, double main_dir);
@@ -109,7 +108,8 @@ void 	DEBUG();
 	- Выходы при ошибке и без ликов
 	
 	- Bonus
-		+ крутиться мышкой
+		- крутиться мышкой
+			- в самом начале положение мышки не менять
 		- миникарта - это отрисовка so_long-a
 		только в маленьком размере в одном из углу
 		- не проходит через стены

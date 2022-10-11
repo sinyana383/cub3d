@@ -7,14 +7,13 @@ INCFLAGS 	= -MMD -I./inc -I./libs/libmlx
 LDFLAGS		= -L./libs/libmlx
 LDLIBS		= -lmlx -framework OpenGL -framework AppKit
 
-VPATH 		= src/ src/get_next_line src/libft/
+VPATH 		= src/ src/get_next_line/ src/libft/ src/realizer/ src/parser
 
 SRCS        = main.c \
 				get_lines.c get_lines_utils.c get_next_line.c get_next_line_utils.c\
 				ft_strlen.c ft_strnstr.c ft_strchr.c\
-				setting_map.c\
-				draw_fun.c\
-				find_dist_and_draw_column.c draw_column.c
+				draw_fun.c find_dist_and_draw_column.c draw_column.c\
+				color_texture.c parse.c utilit_map.c utilt.c
 
 LIBS		= libs/libmlx/libmlx.a
 
